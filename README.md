@@ -29,7 +29,7 @@
 ## 📟 SUBJECT FILE: RITHVIK REDDY
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_character_idle.gif" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/link_pixil_art.gif" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
 </p>
 
 - 👋 **SIGNAL ACQUIRED!** DESIGNATION: **@RithvikReddy0-0**.
