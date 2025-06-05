@@ -1,13 +1,80 @@
-# 💫 About Me:
-👋 Hi, I’m @RithvikReddy0-0<br>👀 I’m interested in programming and coding<br>🌱 I’m currently learning basics of major coding languages and simultaneously working on mini projects
-
-
-## 🌐 Socials:
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rithvik-reddy-911b6b279/) 
-
-# 💻 Tech Stack:
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=flat&logo=openjdk&logoColor=white) ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=flat&logo=html5&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=flat&logo=python&logoColor=ffdd54) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E) ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=flat&logo=css3&logoColor=white) ![R](https://img.shields.io/badge/r-%23276DC3.svg?style=flat&logo=r&logoColor=white) ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=flat&logo=c%2B%2B&logoColor=white) ![Angular.js](https://img.shields.io/badge/angular.js-%23E23237.svg?style=flat&logo=angularjs&logoColor=white) ![Bootstrap](https://img.shields.io/badge/bootstrap-%238511FA.svg?style=flat&logo=bootstrap&logoColor=white) ![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=flat&logo=jquery&logoColor=white) ![MySQL](https://img.shields.io/badge/mysql-4479A1.svg?style=flat&logo=mysql&logoColor=white) ![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=flat&logo=Canva&logoColor=white) ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=flat&logo=figma&logoColor=white) ![Arduino](https://img.shields.io/badge/-Arduino-00979D?style=flat&logo=Arduino&logoColor=white)
-
+<p align="center">
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&size=24&duration=3000&pause=1000&color=F7F7F7&center=true&vCenter=true&width=435&lines=Hey+there+👋+I'm+Rithvik+Reddy!;Tech+Enthusiast+%7C+Coder+%7C+Student;Always+learning+and+building+🚀" alt="Typing SVG" />
+</p>
 
 ---
-[![](https://visitcount.itsvg.in/api?id=RithvikReddy0-0&icon=1&color=8)](https://visitcount.itsvg.in)
+
+## 🌟 About Me
+- 👋 Hi, I’m **@RithvikReddy0-0**
+- 💻 CSE Sophomore, passionate about tech & robotics
+- 🧠 Currently learning core programming languages & building mini-projects
+- 🎮 Gamer & talker with endless curiosity
+- 🚀 Love turning ideas into reality with code!
+
+---
+
+## 🌐 Connect With Me
+
+<p align="center">
+  <a href="https://www.linkedin.com/in/rithvik-reddy-911b6b279/">
+    <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>
+  </a>
+</p>
+
+---
+
+## 🛠️ Tech Stack
+
+<p align="center">
+  <!-- Programming -->
+  <img src="https://skillicons.dev/icons?i=java,python,cpp,js,r" />
+  <!-- Frontend -->
+  <img src="https://skillicons.dev/icons?i=html,css,bootstrap,jquery,angular" />
+  <!-- Backend/DB -->
+  <img src="https://skillicons.dev/icons?i=mysql" />
+  <!-- Tools -->
+  <img src="https://skillicons.dev/icons?i=figma,canva,arduino" />
+</p>
+
+---
+
+## 📊 GitHub Stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=RithvikReddy0-0&show_icons=true&theme=tokyonight" alt="GitHub Stats" />
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RithvikReddy0-0&layout=compact&theme=tokyonight" alt="Top Languages" />
+</p>
+
+---
+
+## 🔥 GitHub Streak & Trophies
+
+<p align="center">
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=RithvikReddy0-0&theme=tokyonight" alt="GitHub Streak"/>
+</p>
+
+<p align="center">
+  <img src="https://github-profile-trophy.vercel.app/?username=RithvikReddy0-0&theme=onedark&no-frame=true&title=Stars,Followers,Commits,Repositories,PullRequest,Issues" />
+</p>
+
+---
+
+## 📈 Activity Graph
+
+<p align="center">
+  <img src="https://github-readme-activity-graph.cyclic.app/graph?username=RithvikReddy0-0&theme=react-dark" alt="GitHub Activity Graph" />
+</p>
+
+---
+
+## 👁️ Visitor Count
+
+<p align="center">
+  <img src="https://visitcount.itsvg.in/api?id=RithvikReddy0-0&icon=0&color=6" />
+</p>
+
+---
+
+> *“Consistency beats motivation. Code every day, even a little.”*
+
+---
