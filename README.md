@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_art_space.gif" alt="Pixel Art Hawkins Skyline Banner" width="85%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/" alt="Pixel Art Hawkins Skyline Banner" width="85%"/>
   <!--
     REMINDER: Your existing banner. If you want to lean harder,
     consider a pixel art banner of a Hawkins-esque skyline at night or the Upside Down.
@@ -15,7 +15,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/katana-zero-rain.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -29,7 +29,7 @@
 ## 📟 SUBJECT FILE: RITHVIK REDDY
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/8-bit-noodle-night-art.gif" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
 </p>
 
 - 👋 **SIGNAL ACQUIRED!** DESIGNATION: **@RithvikReddy0-0**.
@@ -43,7 +43,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/katana-zero-rain.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -66,7 +66,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/link-pixel-art.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
