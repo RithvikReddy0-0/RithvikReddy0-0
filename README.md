@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_banner_stars.gif" alt="Pixel Art Hawkins Skyline Banner" width="85%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_banner_stars.gif" alt="Pixel Art Hawkins Skyline Banner" width="85%"/>
   <!--
     REMINDER: Your existing banner. If you want to lean harder,
     consider a pixel art banner of a Hawkins-esque skyline at night or the Upside Down.
@@ -15,7 +15,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -29,7 +29,7 @@
 ## 📟 SUBJECT FILE: RITHVIK REDDY
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/link-pixel-art.gif" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/link-pixel-art.gif" alt="Pixel Subject Rithvik Reddy" width="100px" style="margin-right: 20px; float: left; image-rendering: pixelated;"/>
 </p>
 
 - 👋 **SIGNAL ACQUIRED!** DESIGNATION: **@RithvikReddy0-0**.
@@ -43,7 +43,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -66,7 +66,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -92,7 +92,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/pixel_divider_bar.gif" alt="Pixelated Static Divider" width="70%"/>
 </p>
 
 <!--
@@ -112,7 +112,7 @@
 
 ---
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assets/game_over_animated.gif" alt="Signal Lost - Continue?" width="200" style="image-rendering: pixelated;"/>
+  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/assests/game_over_animated.gif" alt="Signal Lost - Continue?" width="200" style="image-rendering: pixelated;"/>
   <!--
     The "Game Over" gif still fits. You could make a custom one saying "SIGNAL LOST?" or
     showing TV static for a more ST feel.
