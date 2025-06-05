@@ -46,13 +46,4 @@
 
 ---
 
-<p align="center">
-  <!-- Optional: GitHub Stats -->
-  <a href="https://github.com/RithvikReddy0-0">
-    <img src="https://github-readme-stats.vercel.app/api?username=RithvikReddy0-0&show_icons=true&theme=radical&hide_border=true&count_private=true" alt="RithvikReddy0-0's GitHub stats" />
-  </a>
-  <br>
-  <a href="https://github.com/RithvikReddy0-0">
-    <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RithvikReddy0-0&layout=compact&theme=radical&hide_border=true" alt="Top Languages" />
-  </a>
-</p>
+
