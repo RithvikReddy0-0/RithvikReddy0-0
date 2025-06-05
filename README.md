@@ -38,42 +38,7 @@
 
 ---
 
-## 📊 GitHub Stats
 
-<p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=RithvikReddy0-0&show_icons=true&theme=tokyonight" alt="GitHub Stats" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=RithvikReddy0-0&layout=compact&theme=tokyonight" alt="Top Languages" />
-</p>
-
----
-
-## 🔥 GitHub Streak & Trophies
-
-<p align="center">
-  <img src="https://github-readme-streak-stats.herokuapp.com/?user=RithvikReddy0-0&theme=tokyonight" alt="GitHub Streak"/>
-</p>
-
-<p align="center">
-  <img src="https://github-profile-trophy.vercel.app/?username=RithvikReddy0-0&theme=onedark&no-frame=true&title=Stars,Followers,Commits,Repositories,PullRequest,Issues" />
-</p>
-
----
-
-## 📈 Activity Graph
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.cyclic.app/graph?username=RithvikReddy0-0&theme=react-dark" alt="GitHub Activity Graph" />
-</p>
-
----
-
-## 👁️ Visitor Count
-
-<p align="center">
-  <img src="https://visitcount.itsvg.in/api?id=RithvikReddy0-0&icon=0&color=6" />
-</p>
-
----
 
 > *“Consistency beats motivation. Code every day, even a little.”*
 
