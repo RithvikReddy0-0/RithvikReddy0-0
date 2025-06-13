@@ -12,10 +12,45 @@ const GITHUB_TOKEN = process.env.GITTOKEN;
 // In scripts/generate-eye.js
 // Update the getContributionStreak and main functions like this
 
-async function fetchData() { // Renamed from getContributionStreak for clarity
-    const query = `...`; // Your GraphQL query remains the same
-    // ... all the fetch logic remains the same ...
+async function fetchData() {
+    const GITHUB_USERNAME = 'RithvikReddy0-0'; // Your username
+    const GITHUB_TOKEN = process.env.GITHUB_PAT; // Your secret token
+
+    const query = `
+      query($userName: String!) {
+        user(login: $userName) {
+          contributionsCollection {
+            contributionCalendar {
+              weeks {
+                contributionDays {
+                  contributionCount
+                  date
+                }
+              }
+            }
+          }
+        }
+      }`;
+
+    // THIS IS THE CRUCIAL PART THAT WAS MISSING
+    const response = await fetch('https://api.github.com/graphql', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ query, variables: { userName: GITHUB_USERNAME } })
+    });
+    // END OF MISSING PART
+
     const data = await response.json();
+
+    // Add a check for errors from the API
+    if (data.errors || !data.data.user) {
+        console.error("Error fetching data from GitHub API:", data.errors);
+        return null; // Return null to handle the error gracefully
+    }
+
     return data.data.user.contributionsCollection.contributionCalendar.weeks;
 }
 
