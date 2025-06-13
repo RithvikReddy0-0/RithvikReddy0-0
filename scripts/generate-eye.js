@@ -14,7 +14,7 @@ const GITHUB_TOKEN = process.env.GITTOKEN;
 
 async function fetchData() {
     const GITHUB_USERNAME = 'RithvikReddy0-0'; // Your username
-    const GITHUB_TOKEN = process.env.GITHUB_PAT; // Your secret token
+    const GITHUB_TOKEN = process.env.GITTOKEN; // Your secret token
 
     const query = `
       query($userName: String!) {
