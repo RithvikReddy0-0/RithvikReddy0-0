@@ -4,7 +4,7 @@ import fs from 'fs';
 
 // --- CONFIGURATION ---
 const GITHUB_USERNAME = 'RithvikReddy0-0';
-const GITHUB_TOKEN = process.env.GETTOKEN;
+const GITHUB_TOKEN = process.env.GITTOKEN;
 
 // --- SVG & GRID CONSTANTS ---
 const SQUARE_SIZE = 15;
