@@ -105,6 +105,21 @@ function generateSVG(streak, contributionData) {
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
     const pathLength = contributionPoints.length * 20; // A rough but effective estimation
     const animationDuration = contributionPoints.length * 0.1;
+    // --- NEW: Apotheosis Finale Pulse Generation ---
+    const lastPoint = contributionPoints[contributionPoints.length - 1];
+    let pulseAnimation = '';
+
+    // We'll create 3 expanding waves for a nice ripple effect
+    const waveCount = 3;
+    for (let i = 0; i < waveCount; i++) {
+        pulseAnimation += `
+            <circle cx="${lastPoint.x}" cy="${lastPoint.y}" r="10" fill="none" stroke="#42C0FB" stroke-width="2">
+                <animate attributeName="r" from="10" to="120" dur="3s" begin="animation.end + ${i * 0.6}s" repeatCount="indefinite" />
+                <animate attributeName="opacity" from="1" to="0" dur="3s" begin="animation.end + ${i * 0.6}s" repeatCount="indefinite" />
+            </circle>
+        `;
+    }
+    // --- END OF NEW CODE BLOCK ---
 
     // 5. Assemble the final SVG string
     return `
@@ -125,6 +140,9 @@ function generateSVG(streak, contributionData) {
             <animateTransform attributeName="transform" type="translate" dur="20s" values="0 0; -5 0; 0 0" repeatCount="indefinite" />
         </g>
         
+        <!-- NEW: Layer 1.5: The Apotheosis Pulses -->
+        ${pulseAnimation}
+
         <!-- Layer 2: Contribution Grid -->
         <g opacity="0.6">${gridSquares}</g>
 
