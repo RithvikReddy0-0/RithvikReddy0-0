@@ -81,6 +81,10 @@ async function main() {
         fs.mkdirSync(dir, { recursive: true });
     }
     // ----------------------
+
+    console.log("--- GENERATED SVG CONTENT ---");
+    console.log(svg);
+    console.log("---------------------------");
     
     fs.writeFileSync('dist/eye.svg', svg);
     console.log('Successfully generated eye.svg');
