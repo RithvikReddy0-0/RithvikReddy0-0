@@ -95,6 +95,27 @@ function generateSVG(streak, contributionData) {
         });
     });
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
+        // --- NEW: Identify Nexus Event Points ---
+    // A "Nexus Event" is a day with a high number of contributions.
+    // Let's find the top 3 busiest days (or fewer if there aren't that many).
+    const allContributionDays = contributionData.flatmap(week => week.contributionDays);
+    allContributionDays.sort((a, b) => b.contributionCount - a.contributionCount);
+    
+    const topDays = allContributionDays.slice(0, 3);
+    const nexusDates = topDays.map(day => day.date);
+
+    let nexusPulses = '';
+    contributionPoints.forEach((point, index) => {
+        if (nexusDates.includes(point.date)) {
+            const timeToNexus = index * 0.1; // The time it takes for the eye to reach this point
+            nexusPulses += `
+                <circle cx="${point.x}" cy="${point.y}" r="15" fill="white" opacity="0">
+                    <animate attributeName="opacity" values="0; 0.8; 0" dur="0.7s" begin="animation.begin + ${timeToNexus}s" />
+                </circle>
+            `;
+        }
+    });
+    // --- END OF NEW CODE BLOCK ---
 
     // Fallback for case of zero contributions
     if (contributionPoints.length === 0) {
@@ -145,6 +166,9 @@ function generateSVG(streak, contributionData) {
 
         <!-- Layer 2: Contribution Grid -->
         <g opacity="0.6">${gridSquares}</g>
+
+        <!-- NEW: Layer 2.5: Nexus Event Flashes -->
+        ${nexusPulses}
 
         <!-- Layer 3: Comet Trail -->
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round"
