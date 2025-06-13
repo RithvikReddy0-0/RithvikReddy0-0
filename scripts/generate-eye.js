@@ -98,7 +98,7 @@ function generateSVG(streak, contributionData) {
         // --- NEW: Identify Nexus Event Points ---
     // A "Nexus Event" is a day with a high number of contributions.
     // Let's find the top 3 busiest days (or fewer if there aren't that many).
-    const allContributionDays = contributionData.flatmap(week => week.contributionDays);
+    const allContributionDays = contributionData.flatMap(week => week.contributionDays);
     allContributionDays.sort((a, b) => b.contributionCount - a.contributionCount);
     
     const topDays = allContributionDays.slice(0, 3);
