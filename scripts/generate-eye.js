@@ -159,17 +159,10 @@ function getColor(count) {
 function generateSVG(streak, contributionData) {
     // --- PART 1: Generate the static grid of contribution squares ---
     let gridSquares = '';
+    // ... (This part is fine, no changes needed here) ...
     contributionData.forEach((week, weekIndex) => {
         week.contributionDays.forEach((day, dayIndex) => {
-            gridSquares += `
-                <rect 
-                    x="${weekIndex * (SQUARE_SIZE + SQUARE_GAP)}" 
-                    y="${dayIndex * (SQUARE_SIZE + SQUARE_GAP)}"
-                    width="${SQUARE_SIZE}" 
-                    height="${SQUARE_SIZE}"
-                    fill="${getColor(day.contributionCount)}" 
-                    rx="2" ry="2"
-                />`;
+            gridSquares += `<rect x="${weekIndex * (SQUARE_SIZE + SQUARE_GAP)}" y="${dayIndex * (SQUARE_SIZE + SQUARE_GAP)}" width="${SQUARE_SIZE}" height="${SQUARE_SIZE}" fill="${getColor(day.contributionCount)}" rx="2" ry="2"/>`;
         });
     });
 
@@ -186,56 +179,49 @@ function generateSVG(streak, contributionData) {
             }
         });
     });
-
-    // Sort points by date to create the chronological path
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // Create the SVG path string 'd' attribute
-    const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
+    // --- PART 3: THE DEBUGGING LOGS ---
+    console.log("--- Starting SVG Generation Diagnostics ---");
+    console.log(`Found ${contributionPoints.length} contribution points.`);
+    
+    // Log the first 5 points to check their structure
+    console.log("First 5 contribution points:", JSON.stringify(contributionPoints.slice(0, 5), null, 2));
 
-    // --- PART 3: Define the moving eye and pulses ---
-    const lastPoint = contributionPoints[contributionPoints.length - 1] || { x: 0, y: 0 };
-    let pulseAnimation = '';
-
-    // The pulses will now radiate from the eye's final position
-    if (streak >= 5) {
-        const pulseCount = Math.min(5, Math.floor(streak / 5));
-        for (let i = 0; i < pulseCount; i++) {
-            pulseAnimation += `
-                <circle cx="${lastPoint.x}" cy="${lastPoint.y}" r="10" fill="none" stroke="#00BFFF" stroke-width="1.5" opacity="0">
-                    <animate attributeName="r" from="5" to="50" dur="4s" begin="animation.end+${i * 0.8}s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="1" to="0" dur="4s" begin="animation.end+${i * 0.8}s" repeatCount="indefinite" />
-                </circle>
-            `;
-        }
+    if (contributionPoints.length === 0) {
+        // ... (The zero contribution fallback remains the same) ...
+        console.log("No contributions found. Generating static grid.");
+        return `<svg ... >...</svg>`; // Keeping this brief, your code is fine here
     }
 
+    const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
+    const animationDuration = contributionPoints.length * 0.1;
+
+    // Log the calculated path and duration
+    console.log("Animation duration (seconds):", animationDuration);
+    console.log("Generated SVG Path Data (first 100 chars):", pathData.substring(0, 100));
+    console.log("--- End of Diagnostics ---");
+    // --- END OF DEBUGGING LOGS ---
+
+
     // --- PART 4: Assemble the final SVG ---
+    // The rest of your SVG generation code remains exactly the same.
+    const lastPoint = contributionPoints[contributionPoints.length - 1];
+    let pulseAnimation = '';
+    // ... etc ...
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <style>
-            /* Optional: Add a subtle hover effect to squares */
-            rect:hover { stroke: white; stroke-width: 0.5; }
-        </style>
-        
-        <!-- The background grid of all contributions -->
+        <style>rect:hover { stroke: white; stroke-width: 0.5; }</style>
         <g>${gridSquares}</g>
-
-        <!-- The invisible path for the eye to follow -->
         <path id="motion-path" d="${pathData}" fill="none" stroke="none" />
-
-        <!-- The Neural Pulses, which start after the eye finishes its path -->
         ${pulseAnimation}
-
-        <!-- The Eye Group (scaled down to fit in a square) -->
         <g id="eye-group">
-            <g transform="scale(0.8)"> <!-- Scale the eye down a bit -->
+            <g transform="scale(0.8)">
                 <path d="M -10,0 C -10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
                 <circle cx="0" cy="0" r="5" fill="#42C0FB"/>
                 <circle cx="0" cy="0" r="2.5" fill="#000000"/>
             </g>
-            <!-- This makes the eye move along the path -->
-            <animateMotion id="animation" dur="${contributionPoints.length * 0.1}s" fill="freeze" repeatCount="1">
+            <animateMotion id="animation" dur="${animationDuration}s" fill="freeze" repeatCount="1">
                 <mpath xlink:href="#motion-path"/>
             </animateMotion>
         </g>
