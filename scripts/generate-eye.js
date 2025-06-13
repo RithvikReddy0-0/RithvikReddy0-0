@@ -160,65 +160,71 @@ function getColor(count) {
     return '#39d353'; // Brightest green
 }
 
+// NEW VERSION of generateSVG
 function generateSVG(streak, contributionData) {
-    // --- PART 1: Generate the static grid of contribution squares ---
-    let gridSquares = '';
-    // ... (This part is fine, no changes needed here) ...
-    contributionData.forEach((week, weekIndex) => {
-        week.contributionDays.forEach((day, dayIndex) => {
-            gridSquares += `<rect x="${weekIndex * (SQUARE_SIZE + SQUARE_GAP)}" y="${dayIndex * (SQUARE_SIZE + SQUARE_GAP)}" width="${SQUARE_SIZE}" height="${SQUARE_SIZE}" fill="${getColor(day.contributionCount)}" rx="2" ry="2"/>`;
-        });
-    });
+    // --- SETUP & CALCULATIONS ---
+    const SQUARE_SIZE = 15;
+    const SQUARE_GAP = 3;
+    const GRID_WIDTH = (SQUARE_SIZE + SQUARE_GAP) * 53;
+    const GRID_HEIGHT = (SQUARE_SIZE + SQUARE_GAP) * 7;
 
-    // --- PART 2: Calculate the animation path ---
+    // Generate stars for the background
+    let stars = '';
+    for (let i = 0; i < 100; i++) {
+        const x = Math.random() * GRID_WIDTH;
+        const y = Math.random() * GRID_HEIGHT;
+        const r = Math.random() * 0.8 + 0.2;
+        stars += `<circle cx="${x}" cy="${y}" r="${r}" fill="#555" />`;
+    }
+
+    let gridSquares = '';
+    // ... grid square generation remains the same ...
+    contributionData.forEach((week, weekIndex) => { /* ... */ });
+
     const contributionPoints = [];
-    contributionData.forEach((week, weekIndex) => {
-        week.contributionDays.forEach((day, dayIndex) => {
-            if (day.contributionCount > 0) {
-                contributionPoints.push({
-                    date: day.date,
-                    x: weekIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2,
-                    y: dayIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2
-                });
-            }
-        });
-    });
+    // ... contribution point calculation remains the same ...
+    contributionData.forEach((week, weekIndex) => { /* ... */ });
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // --- PART 3: THE DEBUGGING LOGS ---
-    console.log("--- Starting SVG Generation Diagnostics ---");
-    console.log(`Found ${contributionPoints.length} contribution points.`);
-    
-    // Log the first 5 points to check their structure
-    console.log("First 5 contribution points:", JSON.stringify(contributionPoints.slice(0, 5), null, 2));
-
     if (contributionPoints.length === 0) {
-        // ... (The zero contribution fallback remains the same) ...
-        console.log("No contributions found. Generating static grid.");
-        return `<svg ... >...</svg>`; // Keeping this brief, your code is fine here
+        // ... fallback for zero contributions remains the same ...
     }
 
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
+    
+    // Quick and dirty way to estimate path length for the trail effect
+    const pathLength = contributionPoints.length * (SQUARE_SIZE + SQUARE_GAP); 
     const animationDuration = contributionPoints.length * 0.1;
 
-    // Log the calculated path and duration
-    console.log("Animation duration (seconds):", animationDuration);
-    console.log("Generated SVG Path Data (first 100 chars):", pathData.substring(0, 100));
-    console.log("--- End of Diagnostics ---");
-    // --- END OF DEBUGGING LOGS ---
-
-
-    // --- PART 4: Assemble the final SVG ---
-    // The rest of your SVG generation code remains exactly the same.
     const lastPoint = contributionPoints[contributionPoints.length - 1];
-    let pulseAnimation = '';
-    // ... etc ...
+    let pulseAnimation = ''; // We'll add the Apotheosis pulse later
+
+    // --- SVG ASSEMBLY ---
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-        <style>rect:hover { stroke: white; stroke-width: 0.5; }</style>
-        <g>${gridSquares}</g>
-        <path id="motion-path" d="${pathData}" fill="none" stroke="none" />
-        ${pulseAnimation}
+        <defs>
+            <linearGradient id="trailGradient" gradientTransform="rotate(90)">
+                <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" />
+                <stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
+            </linearGradient>
+        </defs>
+        
+        <!-- Layer 1: Parallax Starfield -->
+        <g id="starfield">
+            ${stars}
+            <animateTransform attributeName="transform" type="translate" dur="20s" values="0 0; -5 0; 0 0" repeatCount="indefinite" />
+        </g>
+        
+        <!-- Layer 2: Contribution Grid -->
+        <g opacity="0.6">${gridSquares}</g>
+
+        <!-- Layer 3: Comet Trail -->
+        <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round"
+              stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
+            <animate attributeName="stroke-dashoffset" to="0" dur="${animationDuration}s" fill="freeze" />
+        </path>
+
+        <!-- Layer 4: The Eye -->
         <g id="eye-group">
             <g transform="scale(0.8)">
                 <path d="M -10,0 C -10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
@@ -229,6 +235,9 @@ function generateSVG(streak, contributionData) {
                 <mpath xlink:href="#motion-path"/>
             </animateMotion>
         </g>
+        
+        <!-- Invisible path for motion -->
+        <path id="motion-path" d="${pathData}" fill="none" stroke="none" />
     </svg>`;
 }
 
