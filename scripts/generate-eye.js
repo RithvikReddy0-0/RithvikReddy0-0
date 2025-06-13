@@ -75,7 +75,13 @@ async function main() {
     // Generate the SVG, passing BOTH the streak and the full contribution data
     const svg = generateSVG(streak, weeks); 
     
-    // ... The rest of the file writing logic remains the same ...
+    // --- THIS IS THE FIX ---
+    const dir = 'dist';
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    // ----------------------
+    
     fs.writeFileSync('dist/eye.svg', svg);
     console.log('Successfully generated eye.svg');
 }
