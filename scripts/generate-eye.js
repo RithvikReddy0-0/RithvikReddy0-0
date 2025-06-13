@@ -214,7 +214,7 @@ function generateSVG(streak, contributionData) {
     let pulseAnimation = '';
     // ... etc ...
     return `
-    <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <style>rect:hover { stroke: white; stroke-width: 0.5; }</style>
         <g>${gridSquares}</g>
         <path id="motion-path" d="${pathData}" fill="none" stroke="none" />
