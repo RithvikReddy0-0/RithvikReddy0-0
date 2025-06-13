@@ -62,36 +62,66 @@ function getColor(count) {
     return '#39d353';
 }
 
-// NEW LOOPING VERSION of generateSVG
+// FULLY CORRECTED LOOPING VERSION of generateSVG
 function generateSVG(streak, contributionData) {
-    // --- 1. All initial calculations remain the same ---
+    // --- 1. All initial calculations ---
     const SQUARE_SIZE = 15;
     const SQUARE_GAP = 3;
     const GRID_WIDTH = (SQUARE_SIZE + SQUARE_GAP) * 53;
     const GRID_HEIGHT = (SQUARE_SIZE + SQUARE_GAP) * 7;
 
-    let stars = ''; // Star generation is the same
-    for (let i = 0; i < 100; i++) { /* ... */ }
+    // Star generation
+    let stars = '';
+    for (let i = 0; i < 100; i++) {
+        const x = Math.random() * GRID_WIDTH;
+        const y = Math.random() * GRID_HEIGHT;
+        const r = Math.random() * 0.7 + 0.2;
+        stars += `<circle cx="${x}" cy="${y}" r="${r}" fill="#555" />`;
+    }
 
-    let gridSquares = ''; // Grid generation is the same
-    contributionData.forEach((week, weekIndex) => { /* ... */ });
+    // Grid generation
+    let gridSquares = '';
+    contributionData.forEach((week, weekIndex) => {
+        week.contributionDays.forEach((day, dayIndex) => {
+            gridSquares += `<rect x="${weekIndex * (SQUARE_SIZE + SQUARE_GAP)}" y="${dayIndex * (SQUARE_SIZE + SQUARE_GAP)}" width="${SQUARE_SIZE}" height="${SQUARE_SIZE}" fill="${getColor(day.contributionCount)}" rx="2" ry="2"/>`;
+        });
+    });
     
-    const contributionPoints = []; // Path point calculation is the same
-    contributionData.forEach((week, weekIndex) => { /* ... */ });
+    // Path point calculation
+    const contributionPoints = [];
+    contributionData.forEach((week, weekIndex) => {
+        week.contributionDays.forEach((day, dayIndex) => {
+            if (day.contributionCount > 0) {
+                contributionPoints.push({
+                    date: day.date,
+                    x: weekIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2,
+                    y: dayIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2
+                });
+            }
+        });
+    });
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-    // Fallback for zero contributions
+    // --- 2. THE FIX: Handle the zero-contribution edge case FIRST ---
     if (contributionPoints.length === 0) {
-        // ... your fallback SVG code ...
+        console.log("No contributions found. Generating static grid.");
+        return `
+        <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="100%" height="100%" fill="#0D1117"/>
+            <g>${gridSquares}</g>
+            <text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">
+                Awaiting the first contribution of the year...
+            </text>
+        </svg>`;
     }
-    
-    // --- 2. NEW: Define the master timeline for the loop ---
-    const forwardDuration = contributionPoints.length * 0.1;
-    const pauseDuration = 2; // Pause between loops
-    const apotheosisDuration = 1.5; // Time for the end pulse to be visible
-    const totalLoopDuration = forwardDuration + apotheosisDuration + forwardDuration + pauseDuration; // Fwd + Apotheosis + Back + Pause
+    // --- END OF FIX ---
 
-    // Normalize key moments in time for the keyTimes attribute (0.0 to 1.0)
+    // --- 3. If we have contributions, proceed with all animation calculations ---
+    const forwardDuration = contributionPoints.length * 0.1;
+    const pauseDuration = 2;
+    const apotheosisDuration = 1.5;
+    const totalLoopDuration = forwardDuration + apotheosisDuration + forwardDuration + pauseDuration;
+
     const t_start = 0;
     const t_endForward = forwardDuration / totalLoopDuration;
     const t_startApotheosis = t_endForward;
@@ -99,13 +129,11 @@ function generateSVG(streak, contributionData) {
     const t_startBackward = t_endApotheosis;
     const t_endBackward = (forwardDuration + apotheosisDuration + forwardDuration) / totalLoopDuration;
     const t_end = 1.0;
-
-    // --- 3. Generate animation components with new timing ---
+    
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
     const pathLength = contributionPoints.length * 20;
-    const lastPoint = contributionPoints[contributionPoints.length - 1];
+    const lastPoint = contributionPoints[contributionPoints.length - 1]; // This is now safe
 
-    // Apotheosis pulse now timed within the loop
     let pulseAnimation = `
         <circle cx="${lastPoint.x}" cy="${lastPoint.y}" r="10" fill="none" stroke="#42C0FB" stroke-width="2" opacity="0">
             <animate attributeName="r" values="10; 120" dur="${apotheosisDuration}s" begin="loop.begin + ${forwardDuration}s" />
@@ -113,7 +141,6 @@ function generateSVG(streak, contributionData) {
         </circle>
     `;
 
-    // Nexus pulses - only fire on the forward journey
     let nexusPulses = '';
     const allContributionDays = contributionData.flatMap(week => week.contributionDays);
     allContributionDays.sort((a, b) => b.contributionCount - a.contributionCount);
@@ -128,7 +155,7 @@ function generateSVG(streak, contributionData) {
         }
     });
 
-    // --- 4. Assemble the final SVG with looping animations ---
+    // --- 4. Assemble the final SVG ---
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
@@ -136,7 +163,6 @@ function generateSVG(streak, contributionData) {
                 <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" />
                 <stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
             </linearGradient>
-            <!-- Master loop controller -->
             <rect id="loop" width="1" height="1">
                 <animate attributeName="width" dur="${totalLoopDuration}s" from="1" to="1" repeatCount="indefinite" />
             </rect>
