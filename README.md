@@ -46,4 +46,6 @@
 
 ---
 
+### The Eye Awakens
 
+![The Eye Awakens](https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/output/eye.svg)
