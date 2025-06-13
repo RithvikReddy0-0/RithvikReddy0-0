@@ -9,17 +9,38 @@ const GITHUB_USERNAME = 'RithvikReddy0-0'; // <-- CHANGE THIS
 const GITHUB_TOKEN = process.env.GITTOKEN;
 
 // The main function that runs everything
+// In scripts/generate-eye.js
+// Update the getContributionStreak and main functions like this
+
+async function fetchData() { // Renamed from getContributionStreak for clarity
+    const query = `...`; // Your GraphQL query remains the same
+    // ... all the fetch logic remains the same ...
+    const data = await response.json();
+    return data.data.user.contributionsCollection.contributionCalendar.weeks;
+}
+
 async function main() {
-    const streak = await getContributionStreak();
+    const weeks = await fetchData();
+    if (!weeks) {
+        console.error('Failed to fetch contribution data.');
+        return;
+    }
+
+    // Calculate streak (this logic can be moved or kept)
+    let days = weeks.flatMap(week => week.contributionDays);
+    days.sort((a, b) => new Date(b.date) - new Date(a.date));
+    let streak = 0;
+    if (days[0].contributionCount > 0) {
+        for (const day of days) {
+            if (day.contributionCount > 0) streak++; else break;
+        }
+    }
     console.log(`Current streak: ${streak} days.`);
 
-    const svg = generateSVG(streak);
+    // Generate the SVG, passing BOTH the streak and the full contribution data
+    const svg = generateSVG(streak, weeks); 
     
-    // Ensure the 'dist' directory exists
-    if (!fs.existsSync('dist')) {
-        fs.mkdirSync('dist');
-    }
-    
+    // ... The rest of the file writing logic remains the same ...
     fs.writeFileSync('dist/eye.svg', svg);
     console.log('Successfully generated eye.svg');
 }
@@ -76,59 +97,106 @@ async function getContributionStreak() {
     return currentStreak;
 }
 
-function generateSVG(streak) {
-    // --- Define different animation states based on streak ---
-    let eyeAnimation = '';
+// In scripts/generate-eye.js
+// Replace the old generateSVG function with this new one.
+
+// Helper constants for the grid
+const SQUARE_SIZE = 15;
+const SQUARE_GAP = 3;
+const GRID_WIDTH = (SQUARE_SIZE + SQUARE_GAP) * 53;
+const GRID_HEIGHT = (SQUARE_SIZE + SQUARE_GAP) * 7;
+
+// Function to map contribution count to a color
+function getColor(count) {
+    if (count === 0) return '#161b22'; // Dark background for empty days
+    if (count <= 1) return '#0e4429';
+    if (count <= 3) return '#006d32';
+    if (count <= 6) return '#26a641';
+    return '#39d353'; // Brightest green
+}
+
+function generateSVG(streak, contributionData) {
+    // --- PART 1: Generate the static grid of contribution squares ---
+    let gridSquares = '';
+    contributionData.forEach((week, weekIndex) => {
+        week.contributionDays.forEach((day, dayIndex) => {
+            gridSquares += `
+                <rect 
+                    x="${weekIndex * (SQUARE_SIZE + SQUARE_GAP)}" 
+                    y="${dayIndex * (SQUARE_SIZE + SQUARE_GAP)}"
+                    width="${SQUARE_SIZE}" 
+                    height="${SQUARE_SIZE}"
+                    fill="${getColor(day.contributionCount)}" 
+                    rx="2" ry="2"
+                />`;
+        });
+    });
+
+    // --- PART 2: Calculate the animation path ---
+    const contributionPoints = [];
+    contributionData.forEach((week, weekIndex) => {
+        week.contributionDays.forEach((day, dayIndex) => {
+            if (day.contributionCount > 0) {
+                contributionPoints.push({
+                    date: day.date,
+                    x: weekIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2,
+                    y: dayIndex * (SQUARE_SIZE + SQUARE_GAP) + SQUARE_SIZE / 2
+                });
+            }
+        });
+    });
+
+    // Sort points by date to create the chronological path
+    contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+    // Create the SVG path string 'd' attribute
+    const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
+
+    // --- PART 3: Define the moving eye and pulses ---
+    const lastPoint = contributionPoints[contributionPoints.length - 1] || { x: 0, y: 0 };
     let pulseAnimation = '';
 
-    // State 1: Living Eye (blinking/looking) - Activates with any streak > 0
-    if (streak > 0) {
-        eyeAnimation = `
-            <!-- Pupil looking left and right -->
-            <animate attributeName="cx" dur="8s" repeatCount="indefinite"
-                keyTimes="0; 0.1; 0.2; 0.8; 0.9; 1"
-                values="100; 95; 100; 105; 100; 100" />
-            <!-- Eyelid blink animation -->
-            <animateTransform attributeName="transform" type="scale"
-                dur="8s" repeatCount="indefinite"
-                keyTimes="0; 0.4; 0.45; 0.5; 1"
-                values="1 1; 1 1; 1 0.1; 1 1; 1 1" />
-        `;
-    }
-
-    // State 2: Neural Pulses - The longer the streak, the more complex the pulses
-    if (streak >= 5) { // First pulse appears at a 5-day streak
-        const pulseCount = Math.min(5, Math.floor(streak / 5)); // Add a new pulse every 5 days, max 5 pulses
+    // The pulses will now radiate from the eye's final position
+    if (streak >= 5) {
+        const pulseCount = Math.min(5, Math.floor(streak / 5));
         for (let i = 0; i < pulseCount; i++) {
             pulseAnimation += `
-                <circle cx="100" cy="100" r="20" fill="none" stroke="#00BFFF" stroke-width="2">
-                    <animate attributeName="r" from="20" to="100" dur="4s" begin="${i * 0.8}s" repeatCount="indefinite" />
-                    <animate attributeName="opacity" from="1" to="0" dur="4s" begin="${i * 0.8}s" repeatCount="indefinite" />
+                <circle cx="${lastPoint.x}" cy="${lastPoint.y}" r="10" fill="none" stroke="#00BFFF" stroke-width="1.5" opacity="0">
+                    <animate attributeName="r" from="5" to="50" dur="4s" begin="animation.end+${i * 0.8}s" repeatCount="indefinite" />
+                    <animate attributeName="opacity" from="1" to="0" dur="4s" begin="animation.end+${i * 0.8}s" repeatCount="indefinite" />
                 </circle>
             `;
         }
     }
 
-    // --- Assemble the final SVG ---
-    // The main SVG canvas with a dark background
+    // --- PART 4: Assemble the final SVG ---
     return `
-    <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect width="200" height="200" fill="#0D1117"/>
+    <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <style>
+            /* Optional: Add a subtle hover effect to squares */
+            rect:hover { stroke: white; stroke-width: 0.5; }
+        </style>
         
-        <!-- The Neural Pulses (rendered behind the eye) -->
+        <!-- The background grid of all contributions -->
+        <g>${gridSquares}</g>
+
+        <!-- The invisible path for the eye to follow -->
+        <path id="motion-path" d="${pathData}" fill="none" stroke="none" />
+
+        <!-- The Neural Pulses, which start after the eye finishes its path -->
         ${pulseAnimation}
-        
-        <!-- The Eye Group -->
-        <g id="eye-group" transform-origin="100 100">
-            <!-- Sclera (white part) -->
-            <path d="M 50,100 C 50,70 150,70 150,100 C 150,130 50,130 50,100 Z" fill="#EAEAEA"/>
-            <!-- Iris (colored part) - A vibrant blue -->
-            <circle id="iris" cx="100" cy="100" r="25" fill="#42C0FB"/>
-            <!-- Pupil (black part) -->
-            <circle id="pupil" cx="100" cy="100" r="12" fill="#000000"/>
-            
-            <!-- Link the animations to the eye group -->
-            ${eyeAnimation}
+
+        <!-- The Eye Group (scaled down to fit in a square) -->
+        <g id="eye-group">
+            <g transform="scale(0.8)"> <!-- Scale the eye down a bit -->
+                <path d="M -10,0 C -10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
+                <circle cx="0" cy="0" r="5" fill="#42C0FB"/>
+                <circle cx="0" cy="0" r="2.5" fill="#000000"/>
+            </g>
+            <!-- This makes the eye move along the path -->
+            <animateMotion id="animation" dur="${contributionPoints.length * 0.1}s" fill="freeze" repeatCount="1">
+                <mpath xlink:href="#motion-path"/>
+            </animateMotion>
         </g>
     </svg>`;
 }
