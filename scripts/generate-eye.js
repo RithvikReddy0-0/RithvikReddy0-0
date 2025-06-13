@@ -173,7 +173,7 @@ function generateSVG(streak, contributionData) {
         <!-- Layer 3: Comet Trail -->
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round"
               stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
-            <animate attributeName="stroke-dashoffset" to="0" dur="${animationDuration}s" fill="freeze" begin="0.5s" />
+            <animate attributeName="stroke-dashoffset" to="0" dur="${animationDuration}s" fill="freeze" begin="1s" />
         </path>
 
         <!-- Layer 4: The Eye -->
@@ -183,7 +183,12 @@ function generateSVG(streak, contributionData) {
                 <circle cx="0" cy="0" r="5" fill="#42C0FB"/>
                 <circle cx="0" cy="0" r="2.5" fill="#000000"/>
             </g>
-            <animateMotion id="animation" dur="${animationDuration}s" fill="freeze" repeatCount="1" begin="0.5s">
+            
+            <!-- NEW: The Genesis scale-up animation -->
+            <animateTransform attributeName="transform" type="scale" begin="0.5s" dur="0.5s" values="0; 1" fill="freeze" />
+
+            <!-- The main journey animation, now starting later -->
+            <animateMotion id="animation" dur="${animationDuration}s" fill="freeze" repeatCount="1" begin="1s">
                 <mpath xlink:href="#motion-path"/>
             </animateMotion>
         </g>
