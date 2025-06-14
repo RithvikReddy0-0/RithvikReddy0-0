@@ -40,7 +40,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/main/output/eye.svg" alt="My Animated GitHub Contribution Graph" />
+  <img src="https://github.com/RithvikReddy0-0/RithvikReddy0-0/blob/main/dist/eye.svg?raw=true" alt="Cosmic Genesis SVG">
   <br>
   <small>This cosmic patrol of my contributions is generated automatically every 12 hour</small>
 </p>

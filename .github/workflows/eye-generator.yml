@@ -1,43 +1,40 @@
-# This workflow is CORRECT for pushing to a separate 'output' branch
-name: Generate The Eye Awakens SVG
+# .github/workflows/main.yml
+name: Generate Contribution SVG
 
 on:
+  # Run automatically on a schedule (every 12 hours)
   schedule:
-    - cron: "0 */12 * * *"
+    - cron: '0 */12 * * *'
+  # Allow manual runs from the Actions tab
   workflow_dispatch:
 
 jobs:
   build:
-    permissions:
-      contents: write
-      
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
+      - name: Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '18' # Use a current LTS version
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Run script to generate SVG
-        # This script must save the file inside a 'dist' folder
-        # e.g., fs.writeFileSync('dist/eye.svg', svg);
-        run: node scripts/generate-eye.js
+      - name: Generate SVG
+        run: node scripts/generate-svg.js # Assuming your script is here
         env:
-          GITTOKEN: ${{ secrets.GITTOKEN }}
+          GITTOKEN: ${{ secrets.GITTOKEN }} # Make sure your token secret is named GITTOKEN
 
-      - name: Commit and push the generated SVG
-        uses: crazy-max/ghaction-github-pages@v3.1.0
+      - name: Commit and Push SVG
+        uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          # This tells the action to push to the 'output' branch
-          target_branch: output
-          # This tells the action to look for files inside the 'dist' folder
-          build_dir: dist
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: 'Bot: Update contribution SVG'
+          commit_user_name: 'github-actions[bot]'
+          commit_user_email: 'github-actions[bot]@users.noreply.github.com'
+          file_pattern: 'dist/eye.svg' # IMPORTANT: Make sure this path is correct
+          repository: .
+          branch: main # Push to the main branch
+          push_options: '--force' # Use force push to overwrite the old SVG
