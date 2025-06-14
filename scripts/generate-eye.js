@@ -204,24 +204,41 @@ async function main() {
         console.error('Execution stopped due to data fetch failure.');
         return;
     }
-    // ... (your streak calculation logic stays the same) ...
-    
+
+    // --- THIS IS THE MISSING PART THAT NEEDS TO BE RESTORED ---
+    // Flatten the weeks into a single array of days
+    let days = weeks.flatMap(week => week.contributionDays);
+
+    // Sort days from most recent to oldest
+    days.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    // Declare and calculate the current streak
+    let streak = 0;
+    // Check if the most recent day has a contribution
+    if (days.length > 0 && days[0].contributionCount > 0) {
+        // Loop through the days to count consecutive contributions
+        for (const day of days) {
+            if (day.contributionCount > 0) {
+                streak++;
+            } else {
+                // Stop counting as soon as we find a day with 0 contributions
+                break;
+            }
+        }
+    }
+    // --- END OF THE MISSING PART ---
+
+    // Now the 'streak' variable exists and can be used
     console.log(`Current streak: ${streak} days.`);
     const svg = generateSVG(streak, weeks);
 
-    // --- THIS IS THE FIX ---
-    const dir = 'dist'; // The directory we want to save into
-
-    // 1. Check if the directory exists on the temporary machine.
+    // This is the directory creation logic you added (it's correct)
+    const dir = 'dist';
     if (!fs.existsSync(dir)){
-        // 2. If it doesn't exist, create it.
         fs.mkdirSync(dir, { recursive: true });
     }
-
-    // 3. Now that we know the folder exists, we can safely write the file.
-    fs.writeFileSync('dist/eye.svg', svg); 
-    // --- END OF FIX ---
-
+    fs.writeFileSync('dist/eye.svg', svg);
+    
     console.log('Successfully generated dist/eye.svg');
 }
 
