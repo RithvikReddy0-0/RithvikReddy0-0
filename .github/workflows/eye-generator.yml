@@ -18,15 +18,16 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Use a current LTS version
+          node-version: '18'
 
       - name: Install Dependencies
         run: npm install
 
       - name: Generate SVG
-        run: node scripts/generate-eye.js.js # Assuming your script is here
+        # The filename must be exact. No extra .js
+        run: node scripts/generate-eye.js # <-- THIS IS THE CORRECTED LINE
         env:
-          GITTOKEN: ${{ secrets.GITTOKEN }} # Make sure your token secret is named GITTOKEN
+          GITTOKEN: ${{ secrets.GITTOKEN }}
 
       - name: Commit and Push SVG
         uses: stefanzweifel/git-auto-commit-action@v4
@@ -34,7 +35,7 @@ jobs:
           commit_message: 'Bot: Update contribution SVG'
           commit_user_name: 'github-actions[bot]'
           commit_user_email: 'github-actions[bot]@users.noreply.github.com'
-          file_pattern: 'dist/eye.svg' # IMPORTANT: Make sure this path is correct
+          file_pattern: 'dist/eye.svg'
           repository: .
-          branch: main # Push to the main branch
-          push_options: '--force' # Use force push to overwrite the old SVG
+          branch: main
+          push_options: '--force'
