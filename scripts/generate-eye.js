@@ -1,4 +1,4 @@
-// FINAL CLEANED-UP "FORGE OF HEROES" VERSION
+// FINAL, ULTIMATE "THE REBEL RUN" VERSION
 import fetch from 'node-fetch';
 import fs from 'fs';
 
@@ -82,16 +82,16 @@ function generateSVG(streak, contributionData) {
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     if (contributionPoints.length < 2) {
-        return `<svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#0D1117"/><text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">Awaiting contributions...</text></svg>`;
+        return `<svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#0D1117"/><text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">Awaiting contributions to begin the run...</text></svg>`;
     }
 
     // 2. Generate "Cosmic Forge" Background Actions
-    let ideaBursts = ''; // Explosions
+    let ideaBursts = '';
     for (let i = 0; i < 5; i++) {
         const origin = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
         const dur = Math.random() * 0.8 + 0.5;
         const delay = Math.random() * 10;
-        for (let j = 0; j < 8; j++) { // 8 particles per burst
+        for (let j = 0; j < 8; j++) {
             const angle = (j / 8) * 2 * Math.PI;
             const distance = Math.random() * 20 + 15;
             const endX = origin.x + Math.cos(angle) * distance;
@@ -102,6 +102,36 @@ function generateSVG(streak, contributionData) {
             </circle>`;
         }
     }
+    
+    // NEW: Anchor the artifacts to random contribution squares
+    let anchoredArtifacts = '';
+    const artifactPoints = [...contributionPoints].sort(() => 0.5 - Math.random()).slice(0, 4);
+    if (artifactPoints.length > 0) {
+        anchoredArtifacts += `
+            <!-- Captain America's Shield -->
+            <g transform="translate(${artifactPoints[0].x}, ${artifactPoints[0].y}) scale(0.6)">
+                <circle cx="0" cy="0" r="12" stroke="#FF4136" stroke-width="2.5"/>
+                <circle cx="0" cy="0" r="8" stroke="#FFFFFF" stroke-width="2.5"/>
+                <circle cx="0" cy="0" r="4" stroke="#0074D9" stroke-width="2.5"/>
+                <polygon points="0,-4.5 1.3,-1.8 4.28,-1.38 2.1,0.7 2.6,3.6 0,2.2 -2.6,3.6 -2.1,0.7 -4.28,-1.38 -1.3,-1.8" fill="#FFFFFF"/>
+            </g>`;
+    }
+    if (artifactPoints.length > 1) {
+        anchoredArtifacts += `
+            <!-- Crossed Lightsabers -->
+            <g transform="translate(${artifactPoints[1].x}, ${artifactPoints[1].y}) scale(0.6)">
+                <g transform="rotate(-30)"><rect x="-2" y="-18" width="4" height="36" fill="#0074D9" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g>
+                <g transform="rotate(30)"><rect x="-2" y="-18" width="4" height="36" fill="#FF4136" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g>
+            </g>`;
+    }
+    if (artifactPoints.length > 2) {
+        anchoredArtifacts += `
+            <!-- Iron Man's Arc Reactor -->
+            <g transform="translate(${artifactPoints[2].x}, ${artifactPoints[2].y}) scale(0.5)">
+                <circle cx="0" cy="0" r="12" stroke="#00BFFF" stroke-width="3"/>
+                <circle cx="0" cy="0" r="4" fill="#FFFFFF"/>
+            </g>`;
+    }
 
     // 3. Main Animation Loop Logic
     const forwardDuration = contributionPoints.length * 0.1;
@@ -111,66 +141,48 @@ function generateSVG(streak, contributionData) {
     const t_start = 0, t_endForward = forwardDuration / totalLoopDuration, t_startApotheosis = t_endForward, t_endApotheosis = (forwardDuration + apotheosisDuration) / totalLoopDuration, t_startBackward = t_endApotheosis, t_endBackward = (forwardDuration + apotheosisDuration + forwardDuration) / totalLoopDuration, t_end = 1.0;
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
     const pathLength = contributionPoints.length * 20;
-    
+
     // 4. Final SVG Assembly
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
             <rect id="loop"><animate attributeName="width" dur="${totalLoopDuration}s" from="1" to="1" repeatCount="indefinite" /></rect>
             <linearGradient id="trailGradient" gradientTransform="rotate(90)">
-                <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" /><stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
+                <stop offset="0%" stop-color="rgba(255, 65, 54, 0.8)" /><stop offset="100%" stop-color="rgba(255, 65, 54, 0)" />
             </linearGradient>
+            <!-- X-Wing Engine Glow Filter -->
+            <filter id="engine-glow">
+                <feGaussianBlur stdDeviation="1.5" />
+            </filter>
         </defs>
 
         <rect width="100%" height="100%" fill="#0D1117"/>
         <g id="starfield">${stars}</g>
-
-        <!-- Celestial Artifacts Layer -->
-        <g id="celestial-artifacts" opacity="0.15" stroke-width="2">
-            <!-- Captain America's Shield -->
-            <g transform="translate(150, 40) scale(0.5)">
-                <circle cx="0" cy="0" r="30" stroke="#FF4136"/>
-                <circle cx="0" cy="0" r="20" stroke="#FFFFFF"/>
-                <circle cx="0" cy="0" r="10" stroke="#0074D9"/>
-                <polygon points="0,-10 2.939,-4.045 9.511,-3.09 4.755,1.545 5.878,8.09 -0,5 -5.878,8.09 -4.755,1.545 -9.511,-3.09 -2.939,-4.045" fill="#FFFFFF"/>
-                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="45s" repeatCount="indefinite" />
-            </g>
-            <!-- Crossed Lightsabers -->
-            <g transform="translate(800, 80) scale(0.6)">
-                <rect x="-5" y="-35" width="10" height="70" fill="#0074D9" transform="rotate(-30)" /><rect x="-2.5" y="35" width="5" height="10" fill="#AAAAAA" transform="rotate(-30)" />
-                <rect x="-5" y="-35" width="10" height="70" fill="#FF4136" transform="rotate(30)" /><rect x="-2.5" y="35" width="5" height="10" fill="#AAAAAA" transform="rotate(30)" />
-                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -10; 0 0" dur="8s" repeatCount="indefinite" />
-            </g>
-            <!-- Iron Man's Arc Reactor -->
-            <g transform="translate(400, 63) scale(0.4)">
-                <circle cx="0" cy="0" r="30" stroke="#00BFFF" stroke-width="4"/>
-                <circle cx="0" cy="0" r="10" fill="#FFFFFF"/>
-                <animateTransform attributeName="transform" type="rotate" from="360 0 0" to="0 0 0" dur="30s" repeatCount="indefinite" />
-            </g>
-            <!-- Death Star -->
-            <g transform="translate(600, 30) scale(0.3)">
-                <circle cx="0" cy="0" r="30" stroke="#AAAAAA"/>
-                <circle cx="0" cy="-15" r="8" stroke="#AAAAAA"/>
-                <line x1="-30" y1="0" x2="30" y2="0" stroke="#AAAAAA" stroke-width="1"/>
-                <animateTransform attributeName="transform" type="translate" values="0 0; 10 5; 0 0" dur="25s" repeatCount="indefinite" />
-            </g>
-        </g>
-        
         <g id="idea-bursts">${ideaBursts}</g>
         <g opacity="0.6">${gridSquares}</g>
+        
+        <!-- Anchored Artifacts Layer -->
+        <g id="anchored-artifacts" opacity="0.7">${anchoredArtifacts}</g>
 
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
             <animate attributeName="stroke-dashoffset" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="${pathLength}; 0; 0; ${pathLength}; ${pathLength}" dur="${totalLoopDuration}s" repeatCount="indefinite" />
         </path>
-        <g id="eye-group">
-            <g transform="scale(0.8)">
-                <path d="M-10,0 C-10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
-                <circle cx="0" cy="0" r="5" fill="#42C0FB">
-                    <animate attributeName="fill" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="#42C0FB; #FFD700; #FFD700; #42C0FB; #42C0FB" dur="${totalLoopDuration}s" repeatCount="indefinite" />
-                </circle>
-                <circle cx="0" cy="0" r="2.5" fill="#000000"/>
+        
+        <!-- NEW: The X-Wing Fighter -->
+        <g id="x-wing">
+            <g>
+                <!-- Fuselage -->
+                <polygon points="-10,0 -5,-2 10,-2 12,0 10,2 -5,2" fill="#AAAAAA" />
+                <!-- Wings -->
+                <polygon points="-8,-2 -12,-6 5,-3" fill="#D3D3D3" />
+                <polygon points="-8,2 -12,6 5,3" fill="#D3D3D3" />
+                <!-- Engine Glows -->
+                <g transform="translate(-10, 0)" filter="url(#engine-glow)">
+                    <circle cx="0" cy="-3.5" r="1.5" fill="#FF851B"><animate attributeName="r" values="1.5; 2; 1.5" dur="0.2s" repeatCount="indefinite" /></circle>
+                    <circle cx="0" cy="3.5" r="1.5" fill="#FF851B"><animate attributeName="r" values="1.5; 2; 1.5" dur="0.2s" repeatCount="indefinite" /></circle>
+                </g>
             </g>
-            <animateMotion keyPoints="0; 1; 1; 0; 0" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" path="${pathData}" dur="${totalLoopDuration}s" repeatCount="indefinite" />
+            <animateMotion keyPoints="0; 1; 1; 0; 0" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" path="${pathData}" dur="${totalLoopDuration}s" repeatCount="indefinite" rotate="auto" />
         </g>
     </svg>`;
 }
