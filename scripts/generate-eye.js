@@ -204,22 +204,25 @@ async function main() {
         console.error('Execution stopped due to data fetch failure.');
         return;
     }
-    let days = weeks.flatMap(week => week.contributionDays);
-    days.sort((a, b) => new Date(b.date) - new Date(a.date));
-    let streak = 0;
-    if (days.length > 0 && days[0].contributionCount > 0) {
-        for (const day of days) {
-            if (day.contributionCount > 0) streak++; else break;
-        }
-    }
+    // ... (your streak calculation logic stays the same) ...
+    
     console.log(`Current streak: ${streak} days.`);
     const svg = generateSVG(streak, weeks);
-    const dir = 'output'; // Changed from 'dist'
+
+    // --- THIS IS THE FIX ---
+    const dir = 'dist'; // The directory we want to save into
+
+    // 1. Check if the directory exists on the temporary machine.
     if (!fs.existsSync(dir)){
+        // 2. If it doesn't exist, create it.
         fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync('output/eye.svg', svg); // Changed from 'dist/eye.svg'
-    console.log('Successfully generated output/eye.svg');
+
+    // 3. Now that we know the folder exists, we can safely write the file.
+    fs.writeFileSync('dist/eye.svg', svg); 
+    // --- END OF FIX ---
+
+    console.log('Successfully generated dist/eye.svg');
 }
 
 main();

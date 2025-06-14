@@ -1,15 +1,13 @@
+# This workflow is CORRECT for pushing to a separate 'output' branch
 name: Generate The Eye Awakens SVG
 
 on:
   schedule:
     - cron: "0 */12 * * *"
-  
   workflow_dispatch:
-  
 
 jobs:
   build:
-
     permissions:
       contents: write
       
@@ -17,37 +15,29 @@ jobs:
 
     steps:
       - name: Check out repository
-       
         uses: actions/checkout@v3
 
       - name: Set up Node.js
-
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Install dependencies
-        
         run: npm install
 
       - name: Run script to generate SVG
-        
+        # This script must save the file inside a 'dist' folder
+        # e.g., fs.writeFileSync('dist/eye.svg', svg);
         run: node scripts/generate-eye.js
-        
         env:
           GITTOKEN: ${{ secrets.GITTOKEN }}
 
-      # Step 5: Commit the new SVG file
       - name: Commit and push the generated SVG
-        # This is another powerful, pre-built Action that handles committing files for you.
         uses: crazy-max/ghaction-github-pages@v3.1.0
         with:
-          # It will commit the files to a branch named "output".
-          # This keeps your main branch clean from automated commits.
+          # This tells the action to push to the 'output' branch
           target_branch: output
-          # It tells the action to look for the file to commit inside the "dist" folder.
+          # This tells the action to look for files inside the 'dist' folder
           build_dir: dist
         env:
-          # This is a different, temporary token that GitHub provides automatically.
-          # It gives the Action permission to push code to YOUR repository.
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
