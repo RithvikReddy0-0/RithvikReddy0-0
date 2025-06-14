@@ -48,4 +48,4 @@
 
 ### The Eye Awakens
 
-![The Eye Awakens](https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/refs/heads/output/eye.svg?token=GHSAT0AAAAAADECWTM26JW3PEPIBAOQCZKU2CMLKWA)
+![The Eye Awakens](https://raw.githubusercontent.com/RithvikReddy0-0/RithvikReddy0-0/output/eye.svg)

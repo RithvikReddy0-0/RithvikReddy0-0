@@ -1,4 +1,4 @@
-// FINAL, COMPLETE "CELESTIAL ECOSYSTEM" VERSION
+// FINAL CLEANED-UP "FORGE OF HEROES" VERSION
 import fetch from 'node-fetch';
 import fs from 'fs';
 
@@ -29,25 +29,17 @@ async function fetchData() {
           }
         }
       }`;
-
     const response = await fetch('https://api.github.com/graphql', {
         method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${GITHUB_TOKEN}`,
-            'Content-Type': 'application/json'
-        },
+        headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, variables: { userName: GITHUB_USERNAME } })
     });
-
     const data = await response.json();
-
     if (!data.data || !data.data.user) {
-        console.error("CRITICAL: Failed to fetch valid data from GitHub API.");
-        console.error("This is likely due to an invalid or expired GITHUB_PAT.");
+        console.error("CRITICAL: Failed to fetch valid data from GitHub API. Check GITHUB_PAT.");
         console.error("Actual response from GitHub:", JSON.stringify(data, null, 2));
         return null;
     }
-
     return data.data.user.contributionsCollection.contributionCalendar.weeks;
 }
 
@@ -61,7 +53,7 @@ function getColor(count) {
 
 // --- The Main SVG Generation Function ---
 function generateSVG(streak, contributionData) {
-    // 1. Initial calculations (Stars, Grid, Path)
+    // 1. Initial calculations
     let stars = '';
     for (let i = 0; i < 150; i++) {
         const x = Math.random() * GRID_WIDTH;
@@ -94,24 +86,12 @@ function generateSVG(streak, contributionData) {
     }
 
     // 2. Generate "Cosmic Forge" Background Actions
-    let synapticTracers = ''; // Laser fire
-    for (let i = 0; i < 7; i++) {
-        const start = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const end = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const dur = Math.random() * 0.3 + 0.2;
-        const delay = Math.random() * 8;
-        const color = i % 2 === 0 ? '#FF4136' : '#0074D9'; // Red and Blue beams
-        synapticTracers += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="${color}" stroke-width="1.5" opacity="0">
-            <animate attributeName="opacity" values="0; 1; 0" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
-        </line>`;
-    }
-
     let ideaBursts = ''; // Explosions
     for (let i = 0; i < 5; i++) {
         const origin = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
         const dur = Math.random() * 0.8 + 0.5;
         const delay = Math.random() * 10;
-        for (let j = 0; j < 8; j++) {
+        for (let j = 0; j < 8; j++) { // 8 particles per burst
             const angle = (j / 8) * 2 * Math.PI;
             const distance = Math.random() * 20 + 15;
             const endX = origin.x + Math.cos(angle) * distance;
@@ -131,8 +111,7 @@ function generateSVG(streak, contributionData) {
     const t_start = 0, t_endForward = forwardDuration / totalLoopDuration, t_startApotheosis = t_endForward, t_endApotheosis = (forwardDuration + apotheosisDuration) / totalLoopDuration, t_startBackward = t_endApotheosis, t_endBackward = (forwardDuration + apotheosisDuration + forwardDuration) / totalLoopDuration, t_end = 1.0;
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
     const pathLength = contributionPoints.length * 20;
-    const lastPoint = contributionPoints[contributionPoints.length - 1];
-
+    
     // 4. Final SVG Assembly
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -146,7 +125,7 @@ function generateSVG(streak, contributionData) {
         <rect width="100%" height="100%" fill="#0D1117"/>
         <g id="starfield">${stars}</g>
 
-        <!-- ULTIMATE: Celestial Artifacts Layer -->
+        <!-- Celestial Artifacts Layer -->
         <g id="celestial-artifacts" opacity="0.15" stroke-width="2">
             <!-- Captain America's Shield -->
             <g transform="translate(150, 40) scale(0.5)">
@@ -178,7 +157,6 @@ function generateSVG(streak, contributionData) {
         </g>
         
         <g id="idea-bursts">${ideaBursts}</g>
-        <g id="synaptic-tracers">${synapticTracers}</g>
         <g opacity="0.6">${gridSquares}</g>
 
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
