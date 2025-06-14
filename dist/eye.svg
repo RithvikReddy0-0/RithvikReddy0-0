@@ -14,7 +14,7 @@
             <filter id="saber-glow-red"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" /><feFlood flood-color="#FF4136" /><feComposite in2="blur" operator="in" result="glow" /><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             
             <!-- Fragment Paths -->
-            <path id="path-0" d="M 477, 63 C 738.0200735167887 52.17439311609699, 738.0200735167887 73.82560688390302, 812.4832601376029 69.89044862581487 S 581.8480344928853 93.82194657686065, 372.1519655071147 93.82194657686065, 533.7068446845852 102.25021352945176 S 216.49177764027928 73.50473595283165, 216.49177764027928 52.49526404716835, 140.71933673628013 66.78635560257301 S 368.04234788471234 15.074144201489318, 585.9576521152875 15.074144201489311, 421.14240122115154 0.5096556543758481 S 477 63, 477 63" fill="none"/><path id="path-1" d="M 477, 63 C 711.4263841350829 51.02343871078057, 711.4263841350829 74.97656128921943, 782.7279172665814 57.919890254205306 S 565.4723166729212 108.77255162217295, 388.52768332707876 108.77255162217295, 399.3985956931064 122.22184762697243 S 129.65340523409122 73.47108583146753, 129.65340523409122 52.528914168532474, 33.67290731631488 56.510749327670005 S 369.4069751065483 19.833012012735985, 584.5930248934516 19.833012012735978, 407.02414498505726 7.30247289278622 S 477 63, 477 63" fill="none"/><path id="path-2" d="M 477, 63 C 790.8449833553277 51.68523864544956, 790.8449833553277 74.31476135455044, 886.9984394951914 67.46255173408788 S 582.9594178757794 110.19003888246638, 371.0405821242206 110.19003888246638, 433.6632022360853 124.42370300588591 S 191.9113325927123 76.26773387145687, 191.9113325927123 49.732266128543145, 103.97903838843746 51.144547666372276 S 393.51174298109487 21.403859454358283, 560.488257018905 21.403859454358283, 438.4458775021795 9.074898376504898 S 477 63, 477 63" fill="none"/><path id="path-3" d="M 477, 63 C 797.5428924078607 50.075505762563445, 797.5428924078607 75.92449423743656, 896.4043093036195 49.54779979839483 S 643.7787042484637 103.89610683442777, 481.0976943970211 113.03560198998018, 606.9805716896753 119.04457317464332 S 255.41318231036763 97.77250286150117, 126.93726601393035 77.00483031687723, 78.28834524298094 99.89075317231865 S 156.7008902142407 49.795451499691566, 274.25331046213864 30.21451169897589, 113.56528757750323 38.56945121371804 S 480.3458891337277 20.752782305661555, 613.1797635977424 28.469652416074048, 560.1279281480114 13.856371196954811 S 477 63, 477 63" fill="none"/><path id="path-4" d="M 477, 63 C 789.8674692702787 53.581786434893175, 789.8674692702787 72.41821356510683, 878.8988624946223 53.19744367406122 S 615.0930162646566 99.585366093077, 480.3928970821863 107.76149340821556, 533.5273334126601 118.43783277992515 S 280.2760343383981 95.16752228283531, 166.21558611605013 75.95565904702976, 185.2775270790184 81.79717114560117 S 213.05436068006964 50.91975989006442, 309.9245915611049 33.00604974955378, 167.42222400279354 32.48447418346397 S 480.5264670605303 28.072188743327075, 620.5293972526819 34.45209723005491, 519.4962767990456 19.630807948382675 S 477 63, 477 63" fill="none"/>
+            <path id="path-0" d="M 477, 63 C 823.1029776541083 53.393206727813464, 823.1029776541083 72.60679327218654, 924.523574482949 67.22163761770989 S 582.9549517387154 105.15382153351054, 371.0450482612847 105.15382153351054, 414.20461419419985 117.96207334993873 S 152.28874197557275 74.18364679313079, 152.28874197557275 51.816353206869216, 52.165001361911095 69.54192109405976 S 402.2664700748243 20.74260769022458, 551.7335299251756 20.74260769022458, 481.929789792427 7.734020210892602 S 477 63, 477 63" fill="none"/><path id="path-1" d="M 477, 63 C 755.0772538068676 51.5972311011338, 755.0772538068676 74.4027688988662, 833.9268262076446 63.09247210340751 S 558.9135419722636 103.50486201079295, 395.0864580277364 103.50486201079295, 486.0957841480468 115.18130377282358 S 131.00803743921892 73.61449086948151, 131.00803743921892 52.38550913051849, 24.74736841646171 72.77649315054512 S 375.56744991782693 22.93726388871577, 578.432550082173 22.937263888715762, 416.5922190977279 10.589344236126742 S 477 63, 477 63" fill="none"/><path id="path-2" d="M 477, 63 C 706.63483796576 53.78309204487496, 706.63483796576 72.21690795512504, 768.899520827957 54.186401193554474 S 584.9693137835917 96.50262245979602, 369.0306862164083 96.50262245979602, 462.6247785024548 106.72876629577831 S 213.51304474217795 77.61509961461056, 213.51304474217795 48.38490038538945, 138.20309213584716 69.32008787082324 S 380.3728464279135 22.843263513203397, 573.6271535720864 22.84326351320339, 567.1346851283007 10.617581636192469 S 477 63, 477 63" fill="none"/><path id="path-3" d="M 477, 63 C 785.2648350390094 52.94414892113184, 785.2648350390094 73.05585107886816, 880.3402166387298 61.3395839263037 S 638.2795982063453 99.54371946524299, 480.9625832860495 107.71053955818368, 535.7625295153803 116.88609767047933 S 314.65084706908067 102.16437939807939, 220.52089655927563 78.77368445753073, 174.9631885827862 85.94836760667614 S 147.58956523246252 47.542218961106386, 268.4859170447959 24.619975162452455, 105.84595795340664 35.320120612000316 S 480.4670484042751 30.726249208282525, 618.1110210785996 36.621367429733624, 616.3923241815189 22.79151989505057 S 477 63, 477 63" fill="none"/><path id="path-4" d="M 477, 63 C 808.5291118116058 52.91689018295148, 808.5291118116058 73.08310981704852, 910.5801426932821 57.88629621737648 S 708.5351112919168 86.10339082832677, 546.9848870323237 96.14998272143461, 682.2764440542069 102.9303054375494 S 405.19849334415875 93.67828602889888, 239.45485933542807 84.38077832573225, 312.33581720921666 97.92647267778469 S 220.3496787318515 76.49710059179063, 220.3496787318515 49.50289940820938, 141.7606947568351 73.20478715622829 S 301.94152226825963 33.083858254217986, 424.0860047111388 20.074717328993636, 270.9852196146725 12.461474443403837 S 554.1311432408492 15.349887520083008, 732.1774903357986 29.790957905222953, 766.5384005802807 4.688153663902909 S 477 63, 477 63" fill="none"/>
 
             <!-- Cosmic Dust Path -->
             <path id="dust-path" d="M0,25.200000000000003 q238.5,63 477,0 t477,0" />
@@ -52,41 +52,41 @@
         <g id="genesis-fragments">
             <g class="fragment" opacity="0">
                 <g transform="scale(0.6)"><circle cx="0" cy="0" r="12" stroke="#FF4136" stroke-width="2.5"/><circle cx="0" cy="0" r="8" stroke="#FFFFFF" stroke-width="2.5"/><circle cx="0" cy="0" r="4" stroke="#0074D9" stroke-width="2.5"/><polygon points="0,-4.5 1.3,-1.8 4.28,-1.38 2.1,0.7 2.6,3.6 0,2.2 -2.6,3.6 -2.1,0.7 -4.28,-1.38 -1.3,-1.8" fill="#FFFFFF"/></g>
-                <animate attributeName="opacity" values="0; 1; 1; 0" dur="23.38252961798341s" begin="0s" repeatCount="indefinite" />
-                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="23.38252961798341s" begin="0s" repeatCount="indefinite" additive="sum"/>
-                <animateMotion dur="23.38252961798341s" begin="0s" repeatCount="indefinite" rotate="auto">
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="32.917004397008284s" begin="0s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="32.917004397008284s" begin="0s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="32.917004397008284s" begin="0s" repeatCount="indefinite" rotate="auto">
                     <mpath xlink:href="#path-0"/>
                 </animateMotion>
             </g>
             <g class="fragment" opacity="0">
                 <g transform="scale(0.5)"><circle cx="0" cy="0" r="12" stroke="#00BFFF" stroke-width="3"/><circle cx="0" cy="0" r="4" fill="#FFFFFF"/><animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="10s" repeatCount="indefinite" /></g>
-                <animate attributeName="opacity" values="0; 1; 1; 0" dur="34.38623992452451s" begin="4s" repeatCount="indefinite" />
-                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="34.38623992452451s" begin="4s" repeatCount="indefinite" additive="sum"/>
-                <animateMotion dur="34.38623992452451s" begin="4s" repeatCount="indefinite" rotate="auto">
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="26.157131047014666s" begin="4s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="26.157131047014666s" begin="4s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="26.157131047014666s" begin="4s" repeatCount="indefinite" rotate="auto">
                     <mpath xlink:href="#path-1"/>
                 </animateMotion>
             </g>
             <g class="fragment" opacity="0">
-                <g transform="scale(0.7)"><rect x="-10" y="-15" width="20" height="15" fill="#AAAAAA" /><rect x="-3" y="0" width="6" height="20" fill="#8B4513" /><g filter="url(#lightning-glow)"><path d="M5,-15 L-5,0 L5,0 L-5,15" stroke="#00BFFF" stroke-width="1.5"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.36493122300954095s" repeatCount="indefinite" /></path></g></g>
-                <animate attributeName="opacity" values="0; 1; 1; 0" dur="24.835306998478938s" begin="8s" repeatCount="indefinite" />
-                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="24.835306998478938s" begin="8s" repeatCount="indefinite" additive="sum"/>
-                <animateMotion dur="24.835306998478938s" begin="8s" repeatCount="indefinite" rotate="auto">
+                <g transform="scale(0.7)"><rect x="-10" y="-15" width="20" height="15" fill="#AAAAAA" /><rect x="-3" y="0" width="6" height="20" fill="#8B4513" /><g filter="url(#lightning-glow)"><path d="M5,-15 L-5,0 L5,0 L-5,15" stroke="#00BFFF" stroke-width="1.5"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="0.6095379514941106s" repeatCount="indefinite" /></path></g></g>
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="34.960482331484165s" begin="8s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="34.960482331484165s" begin="8s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="34.960482331484165s" begin="8s" repeatCount="indefinite" rotate="auto">
                     <mpath xlink:href="#path-2"/>
                 </animateMotion>
             </g>
             <g class="fragment" opacity="0">
                 <g transform="scale(0.6)"><g transform="rotate(-30)"><rect x="-2" y="-18" width="4" height="36" fill="#0074D9" filter="url(#saber-glow-blue)" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g><g transform="rotate(30)"><rect x="-2" y="-18" width="4" height="36" fill="#FF4136" filter="url(#saber-glow-red)" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g></g>
-                <animate attributeName="opacity" values="0; 1; 1; 0" dur="33.89002173989449s" begin="12s" repeatCount="indefinite" />
-                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="33.89002173989449s" begin="12s" repeatCount="indefinite" additive="sum"/>
-                <animateMotion dur="33.89002173989449s" begin="12s" repeatCount="indefinite" rotate="auto">
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="38.968391814816286s" begin="12s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="38.968391814816286s" begin="12s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="38.968391814816286s" begin="12s" repeatCount="indefinite" rotate="auto">
                     <mpath xlink:href="#path-3"/>
                 </animateMotion>
             </g>
             <g class="fragment" opacity="0">
                 <g transform="scale(0.5)" stroke-width="2" stroke="#AAAAAA" fill="none"><path d="M0,0 C-20,15 -20,-15 0,0 M-10,0 L-18,5 L-18, -5 L-10,0 M-10,0 H10 A12 12 0 0 1 10,0"/><circle cx="10" cy="0" r="5"/></g>
-                <animate attributeName="opacity" values="0; 1; 1; 0" dur="28.293126428859967s" begin="16s" repeatCount="indefinite" />
-                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="28.293126428859967s" begin="16s" repeatCount="indefinite" additive="sum"/>
-                <animateMotion dur="28.293126428859967s" begin="16s" repeatCount="indefinite" rotate="auto">
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="25.667707167663572s" begin="16s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="25.667707167663572s" begin="16s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="25.667707167663572s" begin="16s" repeatCount="indefinite" rotate="auto">
                     <mpath xlink:href="#path-4"/>
                 </animateMotion>
             </g></g>
