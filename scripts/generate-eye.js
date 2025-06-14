@@ -99,6 +99,36 @@ function generateSVG(streak, contributionData) {
         </svg>`;
     }
 
+    // 2. Generate "Cosmic Forge" Background Actions
+    let synapticTracers = '';
+    for (let i = 0; i < 7; i++) { // 7 energy beams
+        const start = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
+        const end = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
+        const dur = Math.random() * 0.3 + 0.2;
+        const delay = Math.random() * 8;
+        const color = i % 2 === 0 ? '#FFD700' : '#42C0FB'; // Gold and Blue beams
+        synapticTracers += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="${color}" stroke-width="1" opacity="0">
+            <animate attributeName="opacity" values="0; 1; 0" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
+        </line>`;
+    }
+
+    let ideaBursts = '';
+    for (let i = 0; i < 5; i++) { // 5 explosions
+        const origin = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
+        const dur = Math.random() * 0.8 + 0.5;
+        const delay = Math.random() * 10;
+        for (let j = 0; j < 8; j++) { // 8 particles per burst
+            const angle = (j / 8) * 2 * Math.PI;
+            const distance = Math.random() * 20 + 15;
+            const endX = origin.x + Math.cos(angle) * distance;
+            const endY = origin.y + Math.sin(angle) * distance;
+            ideaBursts += `<circle r="1.5" fill="white" opacity="0">
+                <animateMotion path="M${origin.x},${origin.y}L${endX},${endY}" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0; 1; 0" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
+            </circle>`;
+        }
+    }
+
     // 2. Generate "Living Surroundings"
     let nebulae = '';
     const nebulaColors = ['#8A2BE2', '#4B0082', '#00008B'];
@@ -176,54 +206,32 @@ function generateSVG(streak, contributionData) {
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
-            <!-- NEW: The Grid Ripple Filter -->
-            <filter id="ripple-filter">
-                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
-                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-
-            <!-- NEW: The Moving Mask for the Ripple -->
-            <mask id="ripple-mask">
-                <circle cx="0" cy="0" r="40" fill="white">
-                    <animateMotion
-                        keyPoints="0; 1; 1; 0; 0"
-                        keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}"
-                        path="${pathData}"
-                        dur="${totalLoopDuration}s" repeatCount="indefinite" />
-                </circle>
-            </mask>
-
-            <!-- Other defs remain the same -->
-            <filter id="glow"><feGaussianBlur stdDeviation="15" result="coloredBlur"/></filter>
+            <rect id="loop"><animate attributeName="width" dur="${totalLoopDuration}s" from="1" to="1" repeatCount="indefinite" /></rect>
             <linearGradient id="trailGradient" gradientTransform="rotate(90)">
                 <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" /><stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
             </linearGradient>
-            <rect id="loop" width="1" height="1"><animate attributeName="width" dur="${totalLoopDuration}s" from="1" to="1" repeatCount="indefinite" /></rect>
         </defs>
-
         <rect width="100%" height="100%" fill="#0D1117"/>
         <g id="starfield">${stars}</g>
-        <g id="nebulae" opacity="0.4">${nebulae}</g>
-        <g id="tracers" opacity="0.5">${constellationTracers}</g>
         
-        <!-- The static grid, which will be the source for the ripple -->
+        <!-- NEW: Cosmic Forge Action Layers -->
+        <g id="idea-bursts">${ideaBursts}</g>
+        <g id="synaptic-tracers">${synapticTracers}</g>
+        
         <g opacity="0.6">${gridSquares}</g>
-
-        <!-- NEW: A *copy* of the grid, masked and filtered to create the ripple -->
-        <g opacity="0.6" mask="url(#ripple-mask)" filter="url(#ripple-filter)">
-            ${gridSquares}
-        </g>
-        
-        <!-- The rest of the layers -->
         ${pulseAnimation}
         ${nexusPulses}
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
             <animate attributeName="stroke-dashoffset" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="${pathLength}; 0; 0; ${pathLength}; ${pathLength}" dur="${totalLoopDuration}s" repeatCount="indefinite" />
         </path>
-        <g id="data-sprites">${dataSprites}</g>
         <g id="eye-group">
             <g transform="scale(0.8)">
-                <path d="M-10,0 C-10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/><circle cx="0" cy="0" r="5" fill="#42C0FB"/><circle cx="0" cy="0" r="2.5" fill="#000000"/>
+                <path d="M-10,0 C-10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
+                <!-- The "Charged" Eye Iris -->
+                <circle cx="0" cy="0" r="5" fill="#42C0FB">
+                    <animate attributeName="fill" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="#42C0FB; #FFD700; #FFD700; #42C0FB; #42C0FB" dur="${totalLoopDuration}s" repeatCount="indefinite" />
+                </circle>
+                <circle cx="0" cy="0" r="2.5" fill="#000000"/>
             </g>
             <animateMotion keyPoints="0; 1; 1; 0; 0" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" path="${pathData}" dur="${totalLoopDuration}s" repeatCount="indefinite" />
         </g>
