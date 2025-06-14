@@ -14,6 +14,7 @@ const GRID_HEIGHT = (SQUARE_SIZE + SQUARE_GAP) * 7;
 
 // --- HELPER FUNCTIONS ---
 async function fetchData() {
+    // CORRECTED: The query is a string value, not a key.
     const query = `
       query($userName: String!) {
         user(login: $userName) {
@@ -28,18 +29,32 @@ async function fetchData() {
             }
           }
         }
-      }`;
+      }
+    `;
+
     const response = await fetch('https://api.github.com/graphql', {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${GITHUB_TOKEN}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ query, variables: { userName: GITHUB_USERNAME } })
+        headers: {
+            'Authorization': `Bearer ${GITHUB_TOKEN}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query: query, // Use the query variable here
+            variables: {
+                userName: GITHUB_USERNAME
+            }
+        })
     });
+    
     const data = await response.json();
-    if (!data.data || !data.data.user) {
-        console.error("CRITICAL: Failed to fetch valid data from GitHub API. Check GITHUB_PAT.");
+
+    // Minor improvement: GitHub API returns an 'errors' object on failure. Check for it.
+    if (data.errors || !data.data || !data.data.user) {
+        console.error("CRITICAL: Failed to fetch valid data from GitHub API. Check GITHUB_TOKEN and username.");
         console.error("Actual response from GitHub:", JSON.stringify(data, null, 2));
         return null;
     }
+    
     return data.data.user.contributionsCollection.contributionCalendar.weeks;
 }
 
@@ -198,13 +213,13 @@ async function main() {
         }
     }
     console.log(`Current streak: ${streak} days.`);
-    const svg = generateSVG(streak, weeks); 
-    const dir = 'dist';
+    const svg = generateSVG(streak, weeks);
+    const dir = 'output'; // Changed from 'dist'
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir, { recursive: true });
     }
-    fs.writeFileSync('dist/eye.svg', svg);
-    console.log('Successfully generated eye.svg');
+    fs.writeFileSync('output/eye.svg', svg); // Changed from 'dist/eye.svg'
+    console.log('Successfully generated output/eye.svg');
 }
 
 main();
