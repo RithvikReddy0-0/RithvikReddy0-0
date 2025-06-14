@@ -176,17 +176,45 @@ function generateSVG(streak, contributionData) {
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <defs>
+            <!-- NEW: The Grid Ripple Filter -->
+            <filter id="ripple-filter">
+                <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="3" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+
+            <!-- NEW: The Moving Mask for the Ripple -->
+            <mask id="ripple-mask">
+                <circle cx="0" cy="0" r="40" fill="white">
+                    <animateMotion
+                        keyPoints="0; 1; 1; 0; 0"
+                        keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}"
+                        path="${pathData}"
+                        dur="${totalLoopDuration}s" repeatCount="indefinite" />
+                </circle>
+            </mask>
+
+            <!-- Other defs remain the same -->
             <filter id="glow"><feGaussianBlur stdDeviation="15" result="coloredBlur"/></filter>
             <linearGradient id="trailGradient" gradientTransform="rotate(90)">
                 <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" /><stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
             </linearGradient>
             <rect id="loop" width="1" height="1"><animate attributeName="width" dur="${totalLoopDuration}s" from="1" to="1" repeatCount="indefinite" /></rect>
         </defs>
+
         <rect width="100%" height="100%" fill="#0D1117"/>
         <g id="starfield">${stars}</g>
         <g id="nebulae" opacity="0.4">${nebulae}</g>
         <g id="tracers" opacity="0.5">${constellationTracers}</g>
+        
+        <!-- The static grid, which will be the source for the ripple -->
         <g opacity="0.6">${gridSquares}</g>
+
+        <!-- NEW: A *copy* of the grid, masked and filtered to create the ripple -->
+        <g opacity="0.6" mask="url(#ripple-mask)" filter="url(#ripple-filter)">
+            ${gridSquares}
+        </g>
+        
+        <!-- The rest of the layers -->
         ${pulseAnimation}
         ${nexusPulses}
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
