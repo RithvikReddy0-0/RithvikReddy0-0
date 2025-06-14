@@ -24,7 +24,7 @@ jobs:
         run: npm install
 
       - name: Generate SVG
-        run: node scripts/generate-svg.js # Assuming your script is here
+        run: node scripts/generate-eye.js.js # Assuming your script is here
         env:
           GITTOKEN: ${{ secrets.GITTOKEN }} # Make sure your token secret is named GITTOKEN
 
