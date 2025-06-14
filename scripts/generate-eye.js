@@ -61,7 +61,7 @@ function getColor(count) {
 
 // --- The Main SVG Generation Function ---
 function generateSVG(streak, contributionData) {
-    // 1. Initial calculations
+    // 1. Initial calculations (Stars, Grid, Path)
     let stars = '';
     for (let i = 0; i < 150; i++) {
         const x = Math.random() * GRID_WIDTH;
@@ -90,34 +90,28 @@ function generateSVG(streak, contributionData) {
     contributionPoints.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     if (contributionPoints.length < 2) {
-        return `
-        <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="100%" height="100%" fill="#0D1117"/>
-            <text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">
-                Awaiting contributions to build the cosmos...
-            </text>
-        </svg>`;
+        return `<svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#0D1117"/><text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">Awaiting contributions...</text></svg>`;
     }
 
     // 2. Generate "Cosmic Forge" Background Actions
-    let synapticTracers = '';
-    for (let i = 0; i < 7; i++) { // 7 energy beams
+    let synapticTracers = ''; // Laser fire
+    for (let i = 0; i < 7; i++) {
         const start = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
         const end = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
         const dur = Math.random() * 0.3 + 0.2;
         const delay = Math.random() * 8;
-        const color = i % 2 === 0 ? '#FFD700' : '#42C0FB'; // Gold and Blue beams
-        synapticTracers += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="${color}" stroke-width="1" opacity="0">
+        const color = i % 2 === 0 ? '#FF4136' : '#0074D9'; // Red and Blue beams
+        synapticTracers += `<line x1="${start.x}" y1="${start.y}" x2="${end.x}" y2="${end.y}" stroke="${color}" stroke-width="1.5" opacity="0">
             <animate attributeName="opacity" values="0; 1; 0" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
         </line>`;
     }
 
-    let ideaBursts = '';
-    for (let i = 0; i < 5; i++) { // 5 explosions
+    let ideaBursts = ''; // Explosions
+    for (let i = 0; i < 5; i++) {
         const origin = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
         const dur = Math.random() * 0.8 + 0.5;
         const delay = Math.random() * 10;
-        for (let j = 0; j < 8; j++) { // 8 particles per burst
+        for (let j = 0; j < 8; j++) {
             const angle = (j / 8) * 2 * Math.PI;
             const distance = Math.random() * 20 + 15;
             const endX = origin.x + Math.cos(angle) * distance;
@@ -129,78 +123,15 @@ function generateSVG(streak, contributionData) {
         }
     }
 
-    // 2. Generate "Living Surroundings"
-    let nebulae = '';
-    const nebulaColors = ['#8A2BE2', '#4B0082', '#00008B'];
-    for (let i = 0; i < 3; i++) {
-        const cx = Math.random() * GRID_WIDTH;
-        const cy = Math.random() * GRID_HEIGHT;
-        const r = Math.random() * 50 + 80;
-        const dur = Math.random() * 10 + 15;
-        nebulae += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${nebulaColors[i]}" filter="url(#glow)">
-            <animate attributeName="opacity" values="0; 0.2; 0" dur="${dur}s" repeatCount="indefinite" />
-        </circle>`;
-    }
-
-    let dataSprites = '';
-    for (let i = 0; i < 5; i++) {
-        const startPoint = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const endPoint = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const dur = Math.random() * 3 + 2;
-        const delay = Math.random() * 5;
-        dataSprites += `<circle r="2" fill="#FFD700" opacity="0">
-            <animateMotion path="M${startPoint.x},${startPoint.y}L${endPoint.x},${endPoint.y}" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0; 1; 1; 0" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
-        </circle>`;
-    }
-    
-    let constellationTracers = '';
-    for (let i = 0; i < 3; i++) {
-        const start = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const end = contributionPoints[Math.floor(Math.random() * contributionPoints.length)];
-        const dur = Math.random() * 0.5 + 0.3;
-        const delay = Math.random() * 10;
-        const pathLength = Math.hypot(end.x - start.x, end.y - start.y);
-        constellationTracers += `<path d="M${start.x},${start.y}L${end.x},${end.y}" stroke="#42C0FB" stroke-width="0.5" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
-            <animate attributeName="stroke-dashoffset" values="${pathLength}; 0; -${pathLength}" dur="${dur}s" begin="${delay}s" repeatCount="indefinite" />
-        </path>`;
-    }
-
     // 3. Main Animation Loop Logic
     const forwardDuration = contributionPoints.length * 0.1;
     const pauseDuration = 2;
     const apotheosisDuration = 1.5;
     const totalLoopDuration = forwardDuration + apotheosisDuration + forwardDuration + pauseDuration;
-
     const t_start = 0, t_endForward = forwardDuration / totalLoopDuration, t_startApotheosis = t_endForward, t_endApotheosis = (forwardDuration + apotheosisDuration) / totalLoopDuration, t_startBackward = t_endApotheosis, t_endBackward = (forwardDuration + apotheosisDuration + forwardDuration) / totalLoopDuration, t_end = 1.0;
-    
     const pathData = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
     const pathLength = contributionPoints.length * 20;
     const lastPoint = contributionPoints[contributionPoints.length - 1];
-
-    // --- THIS CODE WAS MISSING ---
-    let pulseAnimation = `
-        <circle cx="${lastPoint.x}" cy="${lastPoint.y}" r="10" fill="none" stroke="#42C0FB" stroke-width="2" opacity="0">
-            <animate attributeName="r" values="10; 120" dur="${apotheosisDuration}s" begin="loop.begin + ${forwardDuration}s" />
-            <animate attributeName="opacity" values="0; 1; 0" dur="${apotheosisDuration}s" begin="loop.begin + ${forwardDuration}s" />
-        </circle>
-    `;
-
-    let nexusPulses = '';
-    const allContributionDays = contributionData.flatMap(week => week.contributionDays);
-    allContributionDays.sort((a, b) => b.contributionCount - a.contributionCount);
-    const topDays = allContributionDays.slice(0, 3);
-    const nexusDates = topDays.map(day => day.date);
-    contributionPoints.forEach((point, index) => {
-        if (nexusDates.includes(point.date)) {
-            const timeToNexus = index * 0.1;
-            nexusPulses += `<circle cx="${point.x}" cy="${point.y}" r="15" fill="white" opacity="0">
-                <animate attributeName="opacity" values="0; 0.8; 0" dur="0.7s" begin="loop.begin + ${timeToNexus}s" />
-            </circle>`;
-        }
-    });
-    // --- END OF MISSING CODE ---
-
 
     // 4. Final SVG Assembly
     return `
@@ -211,23 +142,51 @@ function generateSVG(streak, contributionData) {
                 <stop offset="0%" stop-color="rgba(0, 191, 255, 0.8)" /><stop offset="100%" stop-color="rgba(0, 191, 255, 0)" />
             </linearGradient>
         </defs>
+
         <rect width="100%" height="100%" fill="#0D1117"/>
         <g id="starfield">${stars}</g>
+
+        <!-- ULTIMATE: Celestial Artifacts Layer -->
+        <g id="celestial-artifacts" opacity="0.15" stroke-width="2">
+            <!-- Captain America's Shield -->
+            <g transform="translate(150, 40) scale(0.5)">
+                <circle cx="0" cy="0" r="30" stroke="#FF4136"/>
+                <circle cx="0" cy="0" r="20" stroke="#FFFFFF"/>
+                <circle cx="0" cy="0" r="10" stroke="#0074D9"/>
+                <polygon points="0,-10 2.939,-4.045 9.511,-3.09 4.755,1.545 5.878,8.09 -0,5 -5.878,8.09 -4.755,1.545 -9.511,-3.09 -2.939,-4.045" fill="#FFFFFF"/>
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="45s" repeatCount="indefinite" />
+            </g>
+            <!-- Crossed Lightsabers -->
+            <g transform="translate(800, 80) scale(0.6)">
+                <rect x="-5" y="-35" width="10" height="70" fill="#0074D9" transform="rotate(-30)" /><rect x="-2.5" y="35" width="5" height="10" fill="#AAAAAA" transform="rotate(-30)" />
+                <rect x="-5" y="-35" width="10" height="70" fill="#FF4136" transform="rotate(30)" /><rect x="-2.5" y="35" width="5" height="10" fill="#AAAAAA" transform="rotate(30)" />
+                <animateTransform attributeName="transform" type="translate" values="0 0; 0 -10; 0 0" dur="8s" repeatCount="indefinite" />
+            </g>
+            <!-- Iron Man's Arc Reactor -->
+            <g transform="translate(400, 63) scale(0.4)">
+                <circle cx="0" cy="0" r="30" stroke="#00BFFF" stroke-width="4"/>
+                <circle cx="0" cy="0" r="10" fill="#FFFFFF"/>
+                <animateTransform attributeName="transform" type="rotate" from="360 0 0" to="0 0 0" dur="30s" repeatCount="indefinite" />
+            </g>
+            <!-- Death Star -->
+            <g transform="translate(600, 30) scale(0.3)">
+                <circle cx="0" cy="0" r="30" stroke="#AAAAAA"/>
+                <circle cx="0" cy="-15" r="8" stroke="#AAAAAA"/>
+                <line x1="-30" y1="0" x2="30" y2="0" stroke="#AAAAAA" stroke-width="1"/>
+                <animateTransform attributeName="transform" type="translate" values="0 0; 10 5; 0 0" dur="25s" repeatCount="indefinite" />
+            </g>
+        </g>
         
-        <!-- NEW: Cosmic Forge Action Layers -->
         <g id="idea-bursts">${ideaBursts}</g>
         <g id="synaptic-tracers">${synapticTracers}</g>
-        
         <g opacity="0.6">${gridSquares}</g>
-        ${pulseAnimation}
-        ${nexusPulses}
+
         <path d="${pathData}" fill="none" stroke="url(#trailGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${pathLength}" stroke-dashoffset="${pathLength}">
             <animate attributeName="stroke-dashoffset" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="${pathLength}; 0; 0; ${pathLength}; ${pathLength}" dur="${totalLoopDuration}s" repeatCount="indefinite" />
         </path>
         <g id="eye-group">
             <g transform="scale(0.8)">
                 <path d="M-10,0 C-10,-8 10,-8 10,0 C 10,8 -10,8 -10,0 Z" fill="#EAEAEA"/>
-                <!-- The "Charged" Eye Iris -->
                 <circle cx="0" cy="0" r="5" fill="#42C0FB">
                     <animate attributeName="fill" keyTimes="${t_start}; ${t_endForward}; ${t_startBackward}; ${t_endBackward}; ${t_end}" values="#42C0FB; #FFD700; #FFD700; #42C0FB; #42C0FB" dur="${totalLoopDuration}s" repeatCount="indefinite" />
                 </circle>
@@ -245,7 +204,6 @@ async function main() {
         console.error('Execution stopped due to data fetch failure.');
         return;
     }
-
     let days = weeks.flatMap(week => week.contributionDays);
     days.sort((a, b) => new Date(b.date) - new Date(a.date));
     let streak = 0;
@@ -255,17 +213,13 @@ async function main() {
         }
     }
     console.log(`Current streak: ${streak} days.`);
-
     const svg = generateSVG(streak, weeks); 
-    
     const dir = 'dist';
     if (!fs.existsSync(dir)){
         fs.mkdirSync(dir, { recursive: true });
     }
-    
     fs.writeFileSync('dist/eye.svg', svg);
     console.log('Successfully generated eye.svg');
 }
 
-// --- Run the Script ---
 main();
