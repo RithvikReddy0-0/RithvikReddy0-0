@@ -1,4 +1,4 @@
-// FINAL, ULTIMATE "CELESTIAL STREAM" VERSION
+// FINAL, ULTIMATE "COSMIC GENESIS" VERSION
 import fetch from 'node-fetch';
 import fs from 'fs';
 
@@ -64,6 +64,29 @@ function getColor(count) {
     return '#39d353';
 }
 
+// Generates a unique, looping, organic path for each fragment
+function generateCosmicPath(id) {
+    const cx = GRID_WIDTH / 2;
+    const cy = GRID_HEIGHT / 2;
+    let path = `M ${cx}, ${cy} C`;
+    const points = 4 + Math.floor(Math.random() * 3); // 4 to 6 control points
+    for(let i = 0; i < points; i++){
+        const angle = (i/points) * 2 * Math.PI;
+        const r1 = GRID_WIDTH * (0.3 + Math.random() * 0.2);
+        const r2 = GRID_HEIGHT * (0.3 + Math.random() * 0.2);
+        const x = cx + r1 * Math.cos(angle + Math.random() * 0.5 - 0.25);
+        const y = cy + r2 * Math.sin(angle + Math.random() * 0.5 - 0.25);
+        const c1x = cx + r1 * 0.8 * Math.cos(angle - 0.3);
+        const c1y = cy + r2 * 0.8 * Math.sin(angle - 0.3);
+        const c2x = cx + r1 * 0.8 * Math.cos(angle + 0.3);
+        const c2y = cy + r2 * 0.8 * Math.sin(angle + 0.3);
+        path += ` ${c1x} ${c1y}, ${c2x} ${c2y}, ${x} ${y} S`;
+    }
+    path += ` ${cx} ${cy}, ${cx} ${cy}`; // Loop back to center
+    return `<path id="path-${id}" d="${path}" fill="none"/>`;
+}
+
+
 // --- The Main SVG Generation Function ---
 function generateSVG(streak, contributionData) {
     // 1. Calculate Grid and Patrol Path Data
@@ -90,95 +113,91 @@ function generateSVG(streak, contributionData) {
         return `<svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#0D1117"/><text x="${GRID_WIDTH/2}" y="${GRID_HEIGHT/2}" fill="#888" font-family="sans-serif" font-size="12" text-anchor="middle">Awaiting contributions to begin the patrol...</text></svg>`;
     }
 
-    // 2. NEW: The Celestial Stream of flowing artifacts
-    let celestialStream = '';
+    // 2. Genesis Fragments (Artifacts) with dynamic creation
+    let genesisFragments = '';
+    let fragmentPaths = '';
     const artifactDefs = [
-        // Captain America's Shield
         `<g transform="scale(0.6)"><circle cx="0" cy="0" r="12" stroke="#FF4136" stroke-width="2.5"/><circle cx="0" cy="0" r="8" stroke="#FFFFFF" stroke-width="2.5"/><circle cx="0" cy="0" r="4" stroke="#0074D9" stroke-width="2.5"/><polygon points="0,-4.5 1.3,-1.8 4.28,-1.38 2.1,0.7 2.6,3.6 0,2.2 -2.6,3.6 -2.1,0.7 -4.28,-1.38 -1.3,-1.8" fill="#FFFFFF"/></g>`,
-        // Iron Man's Arc Reactor
         `<g transform="scale(0.5)"><circle cx="0" cy="0" r="12" stroke="#00BFFF" stroke-width="3"/><circle cx="0" cy="0" r="4" fill="#FFFFFF"/><animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="10s" repeatCount="indefinite" /></g>`,
-        // Thor's Hammer
         `<g transform="scale(0.7)"><rect x="-10" y="-15" width="20" height="15" fill="#AAAAAA" /><rect x="-3" y="0" width="6" height="20" fill="#8B4513" /><g filter="url(#lightning-glow)"><path d="M5,-15 L-5,0 L5,0 L-5,15" stroke="#00BFFF" stroke-width="1.5"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="${Math.random()*2}s" repeatCount="indefinite" /></path></g></g>`,
-        // Crossed Lightsabers
         `<g transform="scale(0.6)"><g transform="rotate(-30)"><rect x="-2" y="-18" width="4" height="36" fill="#0074D9" filter="url(#saber-glow-blue)" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g><g transform="rotate(30)"><rect x="-2" y="-18" width="4" height="36" fill="#FF4136" filter="url(#saber-glow-red)" /><rect x="-1" y="18" width="2" height="4" fill="#AAAAAA" /></g></g>`,
-        // Millennium Falcon
         `<g transform="scale(0.5)" stroke-width="2" stroke="#AAAAAA" fill="none"><path d="M0,0 C-20,15 -20,-15 0,0 M-10,0 L-18,5 L-18, -5 L-10,0 M-10,0 H10 A12 12 0 0 1 10,0"/><circle cx="10" cy="0" r="5"/></g>`
     ];
 
     artifactDefs.forEach((def, i) => {
-        const duration = 25 + Math.random() * 15; // 25-40s orbit time
-        const delay = (i / artifactDefs.length) * duration;
-        
-        celestialStream += `
-            <g class="artifact">
+        fragmentPaths += generateCosmicPath(i);
+        const duration = 20 + Math.random() * 20; // 20-40s orbit
+        genesisFragments += `
+            <g class="fragment" opacity="0">
                 ${def}
-                <animateMotion dur="${duration}s" begin="-${delay}s" repeatCount="indefinite" rotate="auto">
-                    <mpath xlink:href="#celestial-path"/>
+                <animate attributeName="opacity" values="0; 1; 1; 0" dur="${duration}s" begin="${i * 4}s" repeatCount="indefinite" />
+                <animateTransform attributeName="transform" type="scale" values="0; 1; 1; 0" dur="${duration}s" begin="${i * 4}s" repeatCount="indefinite" additive="sum"/>
+                <animateMotion dur="${duration}s" begin="${i * 4}s" repeatCount="indefinite" rotate="auto">
+                    <mpath xlink:href="#path-${i}"/>
                 </animateMotion>
-                <animateTransform attributeName="transform" type="translate" additive="sum"
-                    values="0 0; 0 5; 0 0" keyTimes="0; 0.5; 1" dur="${6 + Math.random()*4}s" repeatCount="indefinite" />
             </g>`;
     });
 
-    // 3. Patrol Path for X-Wing
+    // 3. Patrol Ship with Dynamic Speed
     const patrolPath = contributionPoints.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x} ${p.y}`).join(' ');
+    const forwardDuration = Math.max(5, contributionPoints.length * 0.15); // Faster pace, 5s minimum
+    const backwardDuration = forwardDuration * 0.7; 
+    const totalLoopDuration = forwardDuration + backwardDuration;
+    const t_endForward = forwardDuration / totalLoopDuration;
 
     // 4. Final SVG Assembly
     return `
     <svg width="${GRID_WIDTH}" height="${GRID_HEIGHT}" viewBox="0 0 ${GRID_WIDTH} ${GRID_HEIGHT}" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         <style>
             .contribution-square:hover { stroke: rgba(255,255,255,0.7); stroke-width: 1; }
-            .artifact { transition: transform 0.2s ease-out; }
-            .artifact:hover { transform: scale(1.5); filter: url(#hover-glow); }
+            .fragment:hover { filter: url(#hover-glow); transform: scale(1.5); }
         </style>
         <defs>
             <!-- Filters -->
-            <filter id="blur"><feGaussianBlur stdDeviation="5" /></filter>
-            <filter id="hover-glow"><feGaussianBlur stdDeviation="3.5" /></filter>
+            <filter id="blur"><feGaussianBlur stdDeviation="3" /></filter>
+            <filter id="hover-glow"><feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="rgba(255, 255, 180, 0.7)"/></filter>
             <filter id="engine-glow"><feGaussianBlur stdDeviation="2" /></filter>
             <filter id="lightning-glow"><feGaussianBlur stdDeviation="1.5" /></filter>
             <filter id="saber-glow-blue"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" /><feFlood flood-color="#00BFFF" /><feComposite in2="blur" operator="in" result="glow" /><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             <filter id="saber-glow-red"><feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" /><feFlood flood-color="#FF4136" /><feComposite in2="blur" operator="in" result="glow" /><feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
             
-            <!-- Gradients -->
-            <radialGradient id="iris-gradient"><stop offset="0%" stop-color="#FFD700" /><stop offset="50%" stop-color="#FF8C00" /><stop offset="100%" stop-color="#FF4500" /></radialGradient>
-            <radialGradient id="nebula-lid-gradient" cx="50%" cy="50%" r="50%"><stop offset="60%" stop-color="rgba(138, 43, 226, 0)" /><stop offset="100%" stop-color="rgba(138, 43, 226, 0.4)" /></radialGradient>
-            
-            <!-- Paths -->
-            <ellipse id="celestial-path" cx="${GRID_WIDTH/2}" cy="${GRID_HEIGHT/2}" rx="${GRID_WIDTH*0.45}" ry="${GRID_HEIGHT*0.3}" transform="rotate(10 ${GRID_WIDTH/2} ${GRID_HEIGHT/2})"/>
+            <!-- Fragment Paths -->
+            ${fragmentPaths}
+
+            <!-- Cosmic Dust Path -->
+            <path id="dust-path" d="M0,${GRID_HEIGHT*0.2} q${GRID_WIDTH*0.25},${GRID_HEIGHT*0.5} ${GRID_WIDTH*0.5},0 t${GRID_WIDTH*0.5},0" />
         </defs>
 
-        <!-- Layer 0: Deep Space -->
+        <!-- Layer 0: Deep Space & Cosmic Dust -->
         <rect width="100%" height="100%" fill="#0D1117"/>
-        
-        <!-- Layer 1: The Iris Nebula (New Eye) -->
-        <g id="iris-nebula" transform="translate(${GRID_WIDTH/2} ${GRID_HEIGHT/2})">
-            <!-- The 'Lids' are soft nebulae -->
-            <path id="upper-lid" d="M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0" fill="url(#nebula-lid-gradient)" filter="url(#blur)">
-                <animate attributeName="d" dur="0.4s" begin="12s" repeatCount="indefinite" values="M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0; M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},-10 ${GRID_WIDTH/4},-10 ${GRID_WIDTH/2},0; M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},-${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0" />
-            </path>
-            <path id="lower-lid" d="M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0" fill="url(#nebula-lid-gradient)" filter="url(#blur)">
-                 <animate attributeName="d" dur="0.4s" begin="12s" repeatCount="indefinite" values="M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0; M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},10 ${GRID_WIDTH/4},10 ${GRID_WIDTH/2},0; M -${GRID_WIDTH/2},0 C -${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/4},${GRID_HEIGHT/2.5} ${GRID_WIDTH/2},0" />
-            </path>
-            
-            <!-- The 'Iris' is a pulsing star -->
-            <g id="iris-core">
-                <animateTransform attributeName="transform" type="translate" dur="20s" repeatCount="indefinite" calcMode="spline" keyTimes="0; 0.4; 0.5; 0.6; 1" values="0,0; -40,5; 0,0; 40,-5; 0,0" keySplines="0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1; 0.5 0 0.5 1" />
-                <circle r="40" fill="url(#iris-gradient)" opacity="0.8">
-                     <animate attributeName="r" values="40; 42; 40" dur="7s" repeatCount="indefinite"/>
-                </circle>
-                <path d="M0-35 L5,-5 L35,0 L5,5 L0,35 L-5,5 L-35,0 L-5,-5 Z" fill="rgba(255, 223, 186, 0.4)">
-                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="30s" repeatCount="indefinite"/>
-                </path>
-                <circle r="12" fill="#000" />
-            </g>
+        <g stroke-dasharray="1 80" stroke-linecap="round" stroke="rgba(255,255,255,0.3)">
+            <use xlink:href="#dust-path" y="-${GRID_HEIGHT*0.1}" stroke-width="1"><animate attributeName="stroke-dashoffset" from="0" to="81" dur="15s" repeatCount="indefinite" /></use>
+            <use xlink:href="#dust-path" y="${GRID_HEIGHT*0.4}" stroke-width="2"><animate attributeName="stroke-dashoffset" from="0" to="-81" dur="12s" repeatCount="indefinite" /></use>
         </g>
-        
-        <!-- Layer 2: Contribution Grid -->
-        <g opacity="0.5">${gridSquares}</g>
 
-        <!-- Layer 3: The Celestial Stream -->
-        <g id="celestial-stream">${celestialStream}</g>
+        <!-- Layer 1: The Genesis Core (New Eye) -->
+        <g id="genesis-core" transform="translate(${GRID_WIDTH/2} ${GRID_HEIGHT/2})">
+            <g id="iris-corona" opacity="0.8">
+                 <path d="M0-40 L10,-10 L40,0 L10,10 L0,40 L-10,10 L-40,0 L-10,-10 Z" fill="rgba(255, 165, 0, 0.5)" transform="scale(1.2)">
+                    <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="45s" repeatCount="indefinite"/>
+                    <animateTransform attributeName="transform" type="scale" values="1.2; 1.3; 1.2" dur="8s" repeatCount="indefinite" additive="sum"/>
+                 </path>
+                 <path d="M0-30 L7,-7 L30,0 L7,7 L0,30 L-7,7 L-30,0 L-7,-7 Z" fill="rgba(255, 215, 0, 0.7)">
+                     <animateTransform attributeName="transform" type="rotate" from="360" to="0" dur="30s" repeatCount="indefinite"/>
+                 </path>
+            </g>
+            <g id="accretion-disk" fill="none" stroke-linecap="round" opacity="0.7">
+                <path d="M30,0 A30,30 0 0 0 -15,26" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"><animate attributeName="stroke-dashoffset" values="50;0;0" dur="3s" repeatCount="indefinite" keyTimes="0;0.5;1" pathLength="50"/></path>
+                <path d="M-25,-15 A29,29 0 0 1 20,-22" stroke="white" stroke-width="1"><animate attributeName="stroke-dashoffset" values="45;0;0" dur="4s" begin="-1.5s" repeatCount="indefinite" keyTimes="0;0.5;1" pathLength="45"/></path>
+            </g>
+            <circle r="12" fill="#000" />
+        </g>
+
+        <!-- Layer 2: Contribution Grid -->
+        <g opacity="0.4">${gridSquares}</g>
+
+        <!-- Layer 3: Genesis Fragments -->
+        <g id="genesis-fragments">${genesisFragments}</g>
 
         <!-- Layer 4: The Patrol -->
         <g id="x-wing">
@@ -191,7 +210,7 @@ function generateSVG(streak, contributionData) {
                     <circle cx="0" cy="3.5" r="1.5" fill="#FF851B"><animate attributeName="r" values="1.5; 2; 1.5" dur="0.2s" repeatCount="indefinite" /></circle>
                 </g>
             </g>
-            <animateMotion dur="40s" repeatCount="indefinite" path="${patrolPath}" rotate="auto-reverse" />
+            <animateMotion keyPoints="0; 1; 0" keyTimes="0; ${t_endForward}; 1" path="${patrolPath}" dur="${totalLoopDuration}s" repeatCount="indefinite" rotate="auto" />
         </g>
     </svg>`;
 }
@@ -227,7 +246,7 @@ async function main() {
     }
     fs.writeFileSync('dist/eye.svg', svg);
     
-    console.log('Successfully generated dist/eye.svg, featuring the Celestial Stream!');
+    console.log('Successfully forged dist/eye.svg - The Cosmic Genesis is complete!');
 }
 
 main();
