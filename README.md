@@ -24,16 +24,6 @@ I'm Rithvik, a Computer Science student driven by a deep curiosity for AI, Web D
 - 🌱 **Currently Focusing On:** Strengthening core data structures, full-stack project development, and game engineering.
 - 🚀 **Goal:** To create technology that is both innovative and impactful.
 
----
-
-### 📌 My Pinned Projects
-*Replace these with your actual projects!*
-
-- **[Project Name 1](https://github.com/RithvikReddy0-0/your-repo-link)**: A short, compelling description of your project. Highlight the key technology used.
-- **[Project Name 2](https://github.com/RithvikReddy0-0/your-repo-link)**: Describe what this project does and the problem it solves. Mention the stack (e.g., React, Node.js, MongoDB).
-- **[Project Name 3](https://github.com/RithvikReddy0-0/your-repo-link)**: A brief overview of your third-best project. Maybe it's a robotics or a game dev project.
-
----
 
 ### 🛠️ My Tech Stack
 *A snapshot of the tools and technologies I use.*
